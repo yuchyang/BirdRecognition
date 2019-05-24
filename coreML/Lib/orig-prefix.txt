@@ -1,0 +1,1 @@
+c:\users\lyyc\miniconda3\envs\cnn

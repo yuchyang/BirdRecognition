@@ -17,6 +17,7 @@ class DANNClassifier(nn.Module):
         #     self.classifier_layer = nn.Linear(self.bottleneck_layer.out_features, class_num)
         # else:
         self.classifier_layer = nn.Linear(2048, class_num)
+        self.softmax = nn.Softmax()
         # self.softmax = nn.Softmax()
         #
         # ## initialization
@@ -86,7 +87,7 @@ class DANN(object):
         if use_bottleneck:
             feature_dim = self.c_net.bottleneck_layer.out_features
         else:
-            feature_dim = self.c_net.base_network.output_num()
+            feature_dim = 2048
 
         self.d_net = DANNDiscriminator(feature_dim, hidden_dim)
         self.trade_off = trade_off
@@ -97,23 +98,29 @@ class DANN(object):
             self.c_net = self.c_net.cuda()
             self.d_net = self.d_net.cuda()
 
-    def get_loss(self, inputs, labels_source, epoch):
+    def get_loss(self, inputs, labels, epoch):
         class_criterion = nn.CrossEntropyLoss()
         transfer_criterion = nn.BCELoss()
         features, outputs, _ = self.c_net(inputs)
         dc_outputs = self.d_net(features)
-        classifier_loss = class_criterion(outputs.narrow(0, 0, inputs.size(0) // 2), labels_source)
+
+        # classifier_loss = class_criterion(outputs.narrow(0, 0, inputs.size(0) // 2), labels_source)
+        classifier_loss = class_criterion(outputs, labels)
+
         batch_size = dc_outputs.size(0) // 2
-        dc_target = Variable(torch.from_numpy(np.array([[1]] * batch_size +
-                                                       [[0]] * batch_size)).float())
+        dc_target = torch.from_numpy(np.array([[1]] * batch_size +
+                                                       [[0]] * batch_size)).float()
+        # print(dc_target)
         if self.use_gpu:
             dc_target = dc_target.cuda()
+        # print(dc_outputs)
         transfer_loss = transfer_criterion(dc_outputs, dc_target)
         total_loss = self.trade_off * transfer_loss + classifier_loss
         return total_loss
 
     def predict(self, inputs):
         _, _, softmax_outputs = self.c_net(inputs)
+        # print(softmax_outputs)
         return softmax_outputs
 
     def get_parameter_list(self):

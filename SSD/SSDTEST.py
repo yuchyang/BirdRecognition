@@ -6,6 +6,8 @@ import torchvision.transforms as transforms
 import random
 import matplotlib.pyplot as plt
 from utils import utils
+from SSD.mobilenet_v2_ssd_lite import create_mobilenetv2_ssd_lite
+
 
 BATCH_SIZE = 10
 
@@ -17,13 +19,13 @@ def Get_Average(list):
    return sum/len(list)
 
 def test(net,file,show,shuffle):
-    net.eval()
+    # net.eval()
     test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/{0}'.format(file),
                                                  transform=transforms.Compose([
-                                                     transforms.Resize(224),
+                                                     transforms.Resize(300),
                                                      # transforms.RandomCrop(224),
                                                      # transforms.RandomHorizontalFlip(),
-                                                     transforms.CenterCrop(224),
+                                                     transforms.CenterCrop(300),
                                                      transforms.ToTensor(),
                                                      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                                  ])
@@ -38,26 +40,41 @@ def test(net,file,show,shuffle):
     for step, (b_x, b_y) in enumerate(data_loader):  # 分配 batch data, normalize x when iterate train_loader
         x = b_x.cuda()
         y = b_y.cuda()
-        print(x.data.shape)
+
         output = net(x)  # cnn output
-        print(output.data)
-        pred_y = torch.max(output, 1)[1].data.squeeze()
-        print(pred_y.shape)
-        all += BATCH_SIZE
-        print(pred_y)
-        print(y)
-        for i in range(len(pred_y)):
-            if pred_y[i] == y[i]:
-                correct += 1
-            else:
-                if show is True:
-                    utils.show_from_tensor(b_x[i])
-        print('{0}/{1}'.format(correct, all))
-    print(correct/len(test_data))
+        con = output[0]
+        loc = output[1]
+        batch = output[0].shape[0]
+        box = output[0].shape[1]
+        standard = 0.2
+        for i in range(batch):
+            print(i)
+            for j in range(box):
+                p = con[i][j]
+                bird = p[3].float()
+                if bird > standard:
+                    standard = bird
+                    print(bird)
+
+
+    #     pred_y = torch.max(output, 1)[1].data.squeeze()
+    #     print(pred_y.shape)
+    #     all += BATCH_SIZE
+    #     print(pred_y)
+    #     print(y)
+    #     for i in range(len(pred_y)):
+    #         if pred_y[i] == y[i]:
+    #             correct += 1
+    #         else:
+    #             if show is True:
+    #                 utils.show_from_tensor(b_x[i])
+    #     print('{0}/{1}'.format(correct, all))
+    # print(correct/len(test_data))
     return correct/len(test_data)
 
 if __name__ == '__main__':
     # BATCH_SIZE = 1
-    net = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
-    # net = torch.load('densnet_0.904.pkl')
-    test(net,'video recognition',False,False)
+    net = create_mobilenetv2_ssd_lite(21, is_test=True)
+    net.load('D:/model/mb2-ssd-lite-mp-0_686.pth')
+    net.cuda()
+    test(net,'test',False,False)

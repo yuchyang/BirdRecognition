@@ -1,8 +1,16 @@
 /ImageRecognition
-
+*.onnx
+*.coreml
 .DS_Store
 *.pkl
+*.pth
+/validation
 /ImageRecognition
 /test
 /TEST3
 /validation
+/video recognition
+/video recognition_test
+/TEST0
+/Mix_dataset
+/mlvirtualenv
