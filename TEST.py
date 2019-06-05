@@ -6,6 +6,8 @@ import torchvision.transforms as transforms
 import random
 import matplotlib.pyplot as plt
 from utils import utils
+from domain_adaptation import transfor_net
+
 
 BATCH_SIZE = 10
 
@@ -18,9 +20,10 @@ def Get_Average(list):
 def test(net,file,show,shuffle):
     print(net)
     net.eval()
+    # net.set_train(False)
     test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/{0}'.format(file),
                                                  transform=transforms.Compose([
-                                                     utils.Padding(),
+                                                     # utils.Padding(),
                                                      transforms.Resize(224),
                                                      # transforms.RandomCrop(224),
                                                      transforms.RandomHorizontalFlip(),
@@ -39,11 +42,14 @@ def test(net,file,show,shuffle):
     for step, (b_x, b_y) in enumerate(data_loader):  # 分配 batch data, normalize x when iterate train_loader
         x = b_x.cuda()
         y = b_y.cuda()
+        print(x.data)
         # print(x.shape)
         # print(x.data.shape)
         output = net(x)  # cnn output
+        # output = net.predict(x)
         # print(output.data)
         # print(output)
+        print(output)
         pred_y = torch.max(output, 1)[1].data.squeeze()
         # print(pred_y=)
         all += BATCH_SIZE
@@ -63,7 +69,15 @@ if __name__ == '__main__':
     # BATCH_SIZE = 1
     # net = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
     # print(net.bottleneck_layer())
-    net = torch.load('test_mk3_0.7326666666666667.pkl')
-    print(net)
+    # c_net = torch.load('D:/model/DANN_accuracy0.8743386243386243_c_net_0.9853333333333333.pkl')
+    # model = transfor_net.DANN(base_net='ResNet101', use_bottleneck=True, bottleneck_dim=256, class_num=15,
+    #                           hidden_dim=1024,
+    #                           trade_off=1.0, use_gpu=True)
+    # model.load_model('D:/model/DANN_accuracy0.8743386243386243_c_net_0.9853333333333333.pkl', 'D:/model/DANN_accuracy0.8743386243386243_d_net')
+    # # print(net)
     # test(net,'TEST0',True,False)
-    # test(net, 'test', False, False)
+    model = torchvision.models.densenet161(pretrained=False)
+    model.classifier = torch.nn.Linear(2208, 15)
+    model.load_state_dict(torch.load('densnet_0.94_dict.pth'))
+    model.cuda()
+    test(model, 'test', False, False)

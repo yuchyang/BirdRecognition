@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from torchvision import models
 from TEST import *
 from domain_adaptation import transfor_net
+import torch.optim as optim
 
 torch.manual_seed(1)    # reproducible
 
@@ -16,8 +17,9 @@ BATCH_SIZE = 36
 LR = 0.0001
 batch_ratio = 0.5   # video_image/all
 
-img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
-                                            transform=transforms.Compose([
+# img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
+img_data = torchvision.datasets.ImageFolder('D:/IMAGE_TEST',
+                                               transform=transforms.Compose([
                                                 transforms.Resize(256),
                                                 transforms.RandomCrop(224),
                                                 transforms.RandomHorizontalFlip(),
@@ -30,7 +32,8 @@ print(len(img_data))
 data_loader = torch.utils.data.DataLoader(img_data, batch_size=16, shuffle=True)
 print(len(data_loader))
 
-video_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/video recognition',
+# video_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/video recognition',
+video_data = torchvision.datasets.ImageFolder('D:/IMAGE2',
                                             transform=transforms.Compose([
                                                 transforms.Resize(256),
                                                 transforms.RandomCrop(224),
@@ -62,6 +65,23 @@ print(len(test_data))
 # data_loader = torch.utils.data.DataLoader(img_data, batch_size=BATCH_SIZE*(1-batch_ratio), shuffle=True)
 print(len(test_loader))
 
+image_test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/test',
+                                            transform=transforms.Compose([
+                                                transforms.Resize(224),
+                                                # transforms.RandomCrop(224),
+                                                # transforms.RandomHorizontalFlip(),
+                                                transforms.CenterCrop(224),
+                                                transforms.ToTensor(),
+                                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+                                            )
+
+image_test_loader = torch.utils.data.DataLoader(image_test_data, batch_size=32, shuffle=False)
+
+print(len(image_test_data))
+# data_loader = torch.utils.data.DataLoader(img_data, batch_size=BATCH_SIZE*(1-batch_ratio), shuffle=True)
+print(len(image_test_loader))
+
+
 from torch import nn
 import torch as t
 from torch.nn import functional as F
@@ -83,9 +103,9 @@ net = models.resnet101(pretrained=False)
 #     param.requires_grad = True
 net.cuda()
 # print(net)
-optimizer = torch.optim.Adam(net.parameters(), lr=LR)   # optimize all cnn parameters
-loss_func = nn.CrossEntropyLoss()   # the target label is not one-hotted
-standard = 0.80
+# optimizer = torch.optim.Adam(net.parameters(), lr=LR)   # optimize all cnn parameters
+# loss_func = nn.CrossEntropyLoss()   # the target label is not one-hotted
+standard = 0.6
 Loss_list = []
 train_accuracy_list = []
 valid_accuracy_list = []
@@ -166,14 +186,36 @@ def evaluate(model_instance, input_loader):
     accuracy = float(torch.sum(torch.squeeze(predict).long() == all_labels)) / float(all_labels.size()[0])
     return {'accuracy':accuracy}
 
-def train(model_instance, train_source_loader, train_target_loader, test_target_loader, num_iterations, batch_size, optimizer):
+
+class INVScheduler(object):
+    def __init__(self, gamma, decay_rate, init_lr=0.001):
+        self.gamma = gamma
+        self.decay_rate = decay_rate
+        self.init_lr = init_lr
+
+    def next_optimizer(self, group_ratios, optimizer, iter_num):
+        lr = self.init_lr * (1 + self.gamma * iter_num) ** (-self.decay_rate)
+        i=0
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr * group_ratios[i]
+            i+=1
+        return optimizer
+
+
+def train(model_instance, train_source_loader, train_target_loader, test_target_loader,test_source_loader ,num_iterations, batch_size, optimizer, lr_scheduler, group_ratios):
+    train_accuracy_list = []
+    valid_accuracy_list = []
+    image_accuracy_list = []
+    standard = 0.80
+    plt.ion()  # 画图
+    plt.show()
     num_batch_train_source = len(train_source_loader) - 1
     num_batch_train_target = len(train_target_loader) - 1
     model_instance.set_train(True)
     ## train one iter
     print("start train...")
     for iter_num in range(num_iterations):
-        # optimizer = lr_scheduler.next_optimizer(group_ratios, optimizer, iter_num)
+        optimizer = lr_scheduler.next_optimizer(group_ratios, optimizer, iter_num)
         optimizer.zero_grad()
         if iter_num % num_batch_train_source == 0:
             iter_source = iter(train_source_loader)
@@ -182,23 +224,62 @@ def train(model_instance, train_source_loader, train_target_loader, test_target_
         inputs_source, labels_source = iter_source.next()
         inputs_target, labels_target = iter_target.next()
         if model_instance.use_gpu:
-            inputs_source, inputs_target, labels_source,labels_target = inputs_source.cuda(), inputs_target.cuda(), labels_source.cuda(), labels_target.cuda()
+            inputs_source, inputs_target, labels_source = inputs_source.cuda(), inputs_target.cuda(),\
+                                                          labels_source.cuda()
         else:
-            inputs_source, inputs_target, labels_source = Variable(inputs_source), Variable(inputs_target), Variable(labels_source)
-        train_batch(model_instance, inputs_source, labels_source, inputs_target, labels_target, optimizer, iter_num)
+            inputs_source, inputs_target, labels_source = Variable(inputs_source), Variable(inputs_target), Variable(
+                labels_source)
+        loss = train_batch(model_instance, inputs_source, labels_source, inputs_target, optimizer, iter_num)
+        if iter_num % 100 == 0:
+            Loss_list.append(loss)
+            x1 = range(0, len(Loss_list))
+            y1 = Loss_list
+            plt.subplot(2, 1, 1)
+            plt.plot(x1, y1, 'o-')
+            plt.xlabel('')
+            plt.ylabel('loss')
+            plt.pause(0.1)
+
         if iter_num % 500 == 0:
-            eval_result = evaluate(model_instance, test_target_loader)
+            # eval_result = evaluate(model_instance, test_target_loader)
+            eval_result2 = evaluate(model_instance,test_source_loader)
             print('iteration number %s' % iter_num)
-            print(eval_result)
+            # print(eval_result)
+            print(eval_result2)
+            image_accuracy_list.append(eval_result2['accuracy'])
+            # valid_accuracy_list.append(eval_result['accuracy'])
+            plt.subplot(2, 1, 2)
+            x1 = range(0, len(image_accuracy_list))
+            y1 = image_accuracy_list
+            x2 = range(0, len(valid_accuracy_list))
+            y2 = valid_accuracy_list
+            plt.plot(x1, y1, 'g', x2, y2, 'b')
+            plt.xlabel('Epoch')
+            plt.ylabel('Accuracy')
+            plt.pause(0.1)
+            # writer.add_scalars('data/accu', {
+            #     'tgt accu': eval_result['accuracy'],
+            # }, iter_num)
+            if eval_result2['accuracy'] > standard:
+                standard = eval_result2['accuracy']
+                model_instance.save_model(c_net_path='D://model//DANN_IMAGE_accuracy{0}_c_net'.format(standard),d_net_path='D://model//DANN_IMAGE_accuracy{0}_d_net'.format(standard))
     print("finish train.")
 
 
-def train_batch(model_instance, inputs_source, labels_source, inputs_target, labels_target, optimizer, epoch):
+def train_batch(model_instance, inputs_source, labels_source, inputs_target, optimizer, epoch):
     inputs = torch.cat((inputs_source, inputs_target), dim=0)
-    labels = torch.cat((labels_source, labels_target), dim=0)
-    total_loss = model_instance.get_loss(inputs, labels, epoch)
+    total_loss = model_instance.get_loss(inputs, labels_source, epoch)
     total_loss.backward()
     optimizer.step()
+    return total_loss
+
+# def train_batch(model_instance, inputs_source, labels_source, inputs_target, labels_target, optimizer, epoch):
+#     inputs = torch.cat((inputs_source, inputs_target), dim=0)
+#     labels = torch.cat((labels_source, labels_target), dim=0)
+#     total_loss = model_instance.get_loss(inputs, labels, epoch)
+#     print(total_loss)
+#     total_loss.backward()
+#     optimizer.step()
 
 
 class Identity(nn.Module):
@@ -212,7 +293,16 @@ class Identity(nn.Module):
 if __name__ == '__main__':
     base_net = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
     base_net.fc = Identity()
-    net = transfor_net.DANN(base_net=base_net,use_bottleneck=False,trade_off=1)
-    train(net,data_loader,data_loader2,test_loader,1000000,batch_size=32,optimizer=optimizer)
+    # model = transfor_net.DANN(base_net=base_net,use_bottleneck=False,trade_off=1)
+    model = transfor_net.DANN(base_net='ResNet101', use_bottleneck=True, bottleneck_dim=256, class_num=15, hidden_dim=1024,
+                          trade_off=1.0, use_gpu=True)
+    # Set optimizer
+    parameter_list = model.get_parameter_list()
+    optimizer = optim.SGD(parameter_list, lr=1.0, momentum=0.9, weight_decay=0.0005, nesterov=True)
+    scheduler = INVScheduler(gamma=0.0003, decay_rate=0.75, init_lr=0.0003)
+    group_ratios = [param_group["lr"] for param_group in optimizer.param_groups]
+    # Train model
+    train(model,data_loader,data_loader2,test_loader,image_test_loader,1000000, batch_size=32, optimizer=optimizer, lr_scheduler=scheduler, group_ratios=group_ratios)
+    # train(model,data_loader,data_loader2,test_loader,1000000,batch_size=32,optimizer=optimizer)
     # plt.savefig('resnet101_MIX_DATSET_LR = 0.0001.png')
     # plt.show()

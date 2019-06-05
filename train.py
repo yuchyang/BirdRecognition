@@ -5,17 +5,22 @@ import torchvision      # 数据库模块
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from torchvision import models
+import torch.optim as optim
 from TEST import *
 from utils import utils
+from domain_adaptation import transfor_net
+
 
 torch.manual_seed(1)    # reproducible
 
 # Hyper Parameters
 EPOCH = 200           #
-BATCH_SIZE = 22
-LR = 0.001          # Learning rate
+BATCH_SIZE = 42
+LR = 0.001        # Learning rate
 
-img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
+# img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
+img_data = torchvision.datasets.ImageFolder('D:/IMAGE_TEST',
+
                                             transform=transforms.Compose([
                                                 utils.Padding(),
                                                 transforms.Resize(256),
@@ -57,22 +62,23 @@ class ResidualBlock(nn.Module):
 
 
 
+
 # resnet = models.resnet50()
 # net = torch.load('test_mk3_0.7326666666666667.pkl')
-net = torchvision.models.densenet161(pretrained=False)
+net = torchvision.models.resnet101(pretrained=False)
 #
 
 # net = models.resnet152(pretrained=False)
 # net = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
-# net.fc = nn.Linear(2048, 15)
-net.classifier = nn.Linear(2208, 15)
+net.fc = nn.Linear(2048, 15)
+# net.classifier = nn.Linear(2208, 15)
 print(net)
 # for param in net.parameters():
 #     param.requires_grad = False
 # for param in net.fc.parameters():
 #     param.requires_grad = True
 net.cuda()
-optimizer = torch.optim.Adam(net.parameters(), lr=LR)   # optimize all cnn parameters
+optimizer = torch.optim.Adam(net.parameters(), lr=LR,weight_decay=0.0005)   # optimize all cnn parameters
 loss_func = nn.CrossEntropyLoss()   # the target label is not one-hotted
 standard = 0.80
 Loss_list = []
@@ -81,18 +87,45 @@ valid_accuracy_list = []
 image_accuracy_list = []
 plt.ion()   # 画图
 plt.show()
+
+
+class INVScheduler(object):
+    def __init__(self, gamma, decay_rate, init_lr=0.001):
+        self.gamma = gamma
+        self.decay_rate = decay_rate
+        self.init_lr = init_lr
+
+    def next_optimizer(self, group_ratios, optimizer, iter_num):
+        lr = self.init_lr * (1 + self.gamma * iter_num) ** (-self.decay_rate)
+        i=0
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr * group_ratios[i]
+            i+=1
+        return optimizer
+
+
+# parameter_list = net.parameters()
+# optimizer = optim.SGD(parameter_list, lr=1.0, momentum=0.9, weight_decay=0.0005, nesterov=True)
+# scheduler = INVScheduler(gamma=0.0003, decay_rate=0.75, init_lr=0.0003)
+# group_ratios = [param_group["lr"] for param_group in optimizer.param_groups]
+
+
 # training and testing
 for epoch in range(EPOCH):
     correct = 0
     # valid_accuracy = test(net,'video recognition_test',show=False,shuffle=False)
     for step, (b_x, b_y) in enumerate(data_loader):   # 分配 batch data, normalize x when iterate train_loader
+
+        # optimizer = scheduler.next_optimizer(group_ratios, optimizer, len(Loss_list))
+        optimizer.zero_grad()
+
         x = b_x.cuda()
         y = b_y.cuda()
         output = net(x)# cnn output
         pred_y = torch.max(output, 1)[1].data.squeeze()
         loss = loss_func(output, y)     # cross entropy loss
         # print(loss.data)
-        optimizer.zero_grad()           # clear gradients for this training step
+        # optimizer.zero_grad()           # clear gradients for this training step
         loss.backward()                 # backpropagation, compute gradients
         optimizer.step()           # apply gradients
         # print(pred_y)
@@ -111,10 +144,10 @@ for epoch in range(EPOCH):
     image_accuracy = test(net,'test',False,shuffle=False)
     image_accuracy_list.append(image_accuracy)
 
-    valid_accuracy = test(net,'video recognition_test',show=False,shuffle=False)
-    valid_accuracy_list.append(valid_accuracy)
+    # valid_accuracy = test(net,'video recognition_test',show=False,shuffle=False)
+    # valid_accuracy_list.append(valid_accuracy)
     print(image_accuracy)
-    print(valid_accuracy)
+    # print(valid_accuracy)
     plt.subplot(2, 1, 2)
     x1 = range(0, len(image_accuracy_list))
     y1 = image_accuracy_list
@@ -126,8 +159,8 @@ for epoch in range(EPOCH):
     plt.pause(0.1)
     if image_accuracy > standard:
         standard = image_accuracy
-        torch.save(net, 'D://model//densenet161_PADDING_LR = 0.0001_{0}_{1}.pkl'.format(valid_accuracy,image_accuracy))
+        torch.save(net, 'D://model//resnet101_PADDING_{0}_{1}.pkl'.format(valid_accuracy,image_accuracy))
     if epoch is 100:
-        plt.savefig('densenet161_IMAGE_only_LR = 0.001_BATCH_SIZE={0}.png'.format(BATCH_SIZE))
-plt.savefig('resnet101_IMAGE_VIDEO_LR = 0.001.png_epoch=200')
+        plt.savefig('resnet101_IMAGE_only__BATCH_SIZE={0}.png'.format(BATCH_SIZE))
+plt.savefig('resnet101_IMAGE_VIDEO_.png_epoch=200')
 plt.show()

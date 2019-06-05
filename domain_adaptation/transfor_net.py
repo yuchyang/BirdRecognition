@@ -7,40 +7,39 @@ import model.backbone as backbone
 
 
 class DANNClassifier(nn.Module):
-    def __init__(self, base_net, use_bottleneck=True, bottleneck_dim=256, class_num=15):
+    def __init__(self, base_net='ResNet50', use_bottleneck=True, bottleneck_dim=256, class_num=31):
         super(DANNClassifier, self).__init__()
         ## set base network
-        self.base_network = base_net
-        # self.use_bottleneck = use_bottleneck
-        # if use_bottleneck:
-        #     self.bottleneck_layer = nn.Linear(self.base_network.output_num(), bottleneck_dim)
-        #     self.classifier_layer = nn.Linear(self.bottleneck_layer.out_features, class_num)
-        # else:
-        self.classifier_layer = nn.Linear(2048, class_num)
+        self.base_network = backbone.network_dict[base_net]()
+        self.use_bottleneck = use_bottleneck
+        if use_bottleneck:
+            self.bottleneck_layer = nn.Linear(self.base_network.output_num(), bottleneck_dim)
+            self.classifier_layer = nn.Linear(self.bottleneck_layer.out_features, class_num)
+        else:
+            self.classifier_layer = nn.Linear(self.base_network.output_num(), class_num)
         self.softmax = nn.Softmax()
-        # self.softmax = nn.Softmax()
-        #
-        # ## initialization
-        # if use_bottleneck:
-        #     self.bottleneck_layer.weight.data.normal_(0, 0.005)
-        #     self.bottleneck_layer.bias.data.fill_(0.1)
-        # self.classifier_layer.weight.data.normal_(0, 0.01)
-        # self.classifier_layer.bias.data.fill_(0.0)
-        #
-        # ## collect parameters
-        # if use_bottleneck:
-        #     self.parameter_list = [{"params": self.base_network.parameters(), "lr": 1},
-        #                            {"params": self.bottleneck_layer.parameters(), "lr": 10},
-        #                            {"params": self.classifier_layer.parameters(), "lr": 10}]
-        #
-        # else:
-        #     self.parameter_list = [{"params": self.base_network.parameters(), "lr": 1},
-        #                            {"params": self.classifier_layer.parameters(), "lr": 10}]
+
+        ## initialization
+        if use_bottleneck:
+            self.bottleneck_layer.weight.data.normal_(0, 0.005)
+            self.bottleneck_layer.bias.data.fill_(0.1)
+        self.classifier_layer.weight.data.normal_(0, 0.01)
+        self.classifier_layer.bias.data.fill_(0.0)
+
+        ## collect parameters
+        if use_bottleneck:
+            self.parameter_list = [{"params":self.base_network.parameters(), "lr":1},
+                                {"params":self.bottleneck_layer.parameters(), "lr":10},
+                            {"params":self.classifier_layer.parameters(), "lr":10}]
+
+        else:
+            self.parameter_list = [{"params":self.base_network.parameters(), "lr":1},
+                            {"params":self.classifier_layer.parameters(), "lr":10}]
 
     def forward(self, inputs):
         features = self.base_network(inputs)
-        # if self.use_bottleneck:
-        #     features = self.bottleneck_layer(features)
+        if self.use_bottleneck:
+            features = self.bottleneck_layer(features)
         outputs = self.classifier_layer(features)
         softmax_outputs = self.softmax(outputs)
         return features, outputs, softmax_outputs
@@ -51,7 +50,7 @@ class DANNDiscriminator(nn.Module):
         super(DANNDiscriminator, self).__init__()
 
         self.ad_layer1 = nn.Linear(feature_dim, hidden_dim)
-        self.ad_layer2 = nn.Linear(hidden_dim, hidden_dim)
+        self.ad_layer2 = nn.Linear(hidden_dim,hidden_dim)
         self.ad_layer3 = nn.Linear(hidden_dim, 1)
 
         self.relu = nn.ReLU()
@@ -67,9 +66,9 @@ class DANNDiscriminator(nn.Module):
         self.ad_layer2.bias.data.fill_(0.0)
         self.ad_layer3.bias.data.fill_(0.0)
 
-        self.parameter_list = [{"params": self.ad_layer1.parameters(), "lr": 10},
-                               {"params": self.ad_layer2.parameters(), "lr": 10},
-                               {"params": self.ad_layer3.parameters(), "lr": 10}]
+        self.parameter_list = [{"params":self.ad_layer1.parameters(), "lr":10},
+                            {"params":self.ad_layer2.parameters(), "lr":10},
+                        {"params":self.ad_layer3.parameters(), "lr":10}]
 
     def forward(self, inputs):
         outputs = self.grl_layer(inputs)
@@ -78,16 +77,14 @@ class DANNDiscriminator(nn.Module):
         outputs = self.sigmoid(self.ad_layer3(outputs))
         return outputs
 
-
 class DANN(object):
-    def __init__(self, base_net='ResNet50', use_bottleneck=True, bottleneck_dim=256, class_num=15, hidden_dim=1024,
-                 trade_off=1.0, use_gpu=True, writer=None):
+    def __init__(self, base_net='ResNet50', use_bottleneck=True, bottleneck_dim=256, class_num=31, hidden_dim=1024, trade_off=1.0, use_gpu=True, writer=None):
         self.c_net = DANNClassifier(base_net, use_bottleneck, bottleneck_dim, class_num)
 
         if use_bottleneck:
             feature_dim = self.c_net.bottleneck_layer.out_features
         else:
-            feature_dim = 2048
+            feature_dim = self.c_net.base_network.output_num()
 
         self.d_net = DANNDiscriminator(feature_dim, hidden_dim)
         self.trade_off = trade_off
@@ -98,29 +95,23 @@ class DANN(object):
             self.c_net = self.c_net.cuda()
             self.d_net = self.d_net.cuda()
 
-    def get_loss(self, inputs, labels, epoch):
+    def get_loss(self, inputs, labels_source, epoch):
         class_criterion = nn.CrossEntropyLoss()
         transfer_criterion = nn.BCELoss()
         features, outputs, _ = self.c_net(inputs)
         dc_outputs = self.d_net(features)
-
-        # classifier_loss = class_criterion(outputs.narrow(0, 0, inputs.size(0) // 2), labels_source)
-        classifier_loss = class_criterion(outputs, labels)
-
+        classifier_loss = class_criterion(outputs.narrow(0, 0, inputs.size(0)//2), labels_source)
         batch_size = dc_outputs.size(0) // 2
-        dc_target = torch.from_numpy(np.array([[1]] * batch_size +
-                                                       [[0]] * batch_size)).float()
-        # print(dc_target)
+        dc_target = Variable(torch.from_numpy(np.array([[1]] * batch_size +
+                    [[0]] * batch_size)).float())
         if self.use_gpu:
             dc_target = dc_target.cuda()
-        # print(dc_outputs)
         transfer_loss = transfer_criterion(dc_outputs, dc_target)
         total_loss = self.trade_off * transfer_loss + classifier_loss
         return total_loss
 
     def predict(self, inputs):
         _, _, softmax_outputs = self.c_net(inputs)
-        # print(softmax_outputs)
         return softmax_outputs
 
     def get_parameter_list(self):
