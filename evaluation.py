@@ -17,6 +17,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.utils.multiclass import unique_labels
 from sklearn.metrics import classification_report
 
+validation = 'C:/Users/lyyc/Desktop/BirdRecognition/video recognition_validation'
 
 BATCH_SIZE = 10
 
@@ -84,8 +85,8 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 def test(net,file,show,shuffle):
     print(net)
     # net.eval()
-    net.set_train(False)
-    test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/video recognition_test',
+
+    test_data = torchvision.datasets.ImageFolder(validation,
     # test_data = torchvision.datasets.ImageFolder('D:/VALIDATION',
                                                  transform=transforms.Compose([
                                                      # utils.Padding(),
@@ -143,13 +144,14 @@ if __name__ == '__main__':
                               hidden_dim=1024,
                               trade_off=1.0, use_gpu=True)
     model.load_model('D:/model/DANN_accuracy0.8703703703703703_c_net', 'D:/model/DANN_accuracy0.8743386243386243_d_net')
+    model.set_train(False)
     # print(net)
     # test(net,'TEST0',True,False)
     # model = torchvision.models.densenet161(pretrained=False)
     # model.classifier = torch.nn.Linear(2208, 15)
     # model.load_state_dict(torch.load('densnet_0.94_dict.pth'))
     # model = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
-    #
+    # model.eval()
     # model.cuda()
     np.set_printoptions(precision=2)
     true, pred = test(model, 'video recognition_test', False, False)

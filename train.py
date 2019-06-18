@@ -18,9 +18,26 @@ EPOCH = 200           #
 BATCH_SIZE = 42
 LR = 0.001        # Learning rate
 
-# img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
-img_data = torchvision.datasets.ImageFolder('D:/IMAGE_TEST',
+class INVScheduler(object):
+    def __init__(self, gamma, decay_rate, init_lr=0.001):
+        self.gamma = gamma
+        self.decay_rate = decay_rate
+        self.init_lr = init_lr
 
+    def next_optimizer(self, group_ratios, optimizer, iter_num):
+        lr = self.init_lr * (1 + self.gamma * iter_num) ** (-self.decay_rate)
+        i=0
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr * group_ratios[i]
+            i+=1
+        return optimizer
+
+img_address = 'C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition'
+model_saving_adress = 'D://model//resnet101_PADDING_{0}_{1}.pkl'
+test_address = 'video recognition_test'
+
+img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
+# img_data = torchvision.datasets.ImageFolder('D:/IMAGE_TEST',
                                             transform=transforms.Compose([
                                                 utils.Padding(),
                                                 transforms.Resize(256),
@@ -144,8 +161,8 @@ for epoch in range(EPOCH):
     image_accuracy = test(net,'test',False,shuffle=False)
     image_accuracy_list.append(image_accuracy)
 
-    # valid_accuracy = test(net,'video recognition_test',show=False,shuffle=False)
-    # valid_accuracy_list.append(valid_accuracy)
+    valid_accuracy = test(net,test_address,show=False,shuffle=False)
+    valid_accuracy_list.append(valid_accuracy)
     print(image_accuracy)
     # print(valid_accuracy)
     plt.subplot(2, 1, 2)
@@ -159,7 +176,7 @@ for epoch in range(EPOCH):
     plt.pause(0.1)
     if image_accuracy > standard:
         standard = image_accuracy
-        torch.save(net, 'D://model//resnet101_PADDING_{0}_{1}.pkl'.format(valid_accuracy,image_accuracy))
+        torch.save(net, model_saving_adress.format(valid_accuracy,image_accuracy))
     if epoch is 100:
         plt.savefig('resnet101_IMAGE_only__BATCH_SIZE={0}.png'.format(BATCH_SIZE))
 plt.savefig('resnet101_IMAGE_VIDEO_.png_epoch=200')

@@ -14,3 +14,6 @@
 /TEST0
 /Mix_dataset
 /mlvirtualenv
+*.xml
+*.png
+*.jpg

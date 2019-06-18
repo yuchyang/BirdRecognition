@@ -107,6 +107,7 @@ class DANN(object):
         if self.use_gpu:
             dc_target = dc_target.cuda()
         transfer_loss = transfer_criterion(dc_outputs, dc_target)
+
         total_loss = self.trade_off * transfer_loss + classifier_loss
         return total_loss
 

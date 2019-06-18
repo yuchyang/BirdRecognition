@@ -17,8 +17,14 @@ BATCH_SIZE = 36
 LR = 0.0001
 batch_ratio = 0.5   # video_image/all
 
-# img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
-img_data = torchvision.datasets.ImageFolder('D:/IMAGE_TEST',
+img_train_address = 'D:/IMAGE2'
+image_test_address = 'C:/Users/lyyc/Desktop/BirdRecognition/image_test'
+video_train_address = 'C:/Users/lyyc/Desktop/BirdRecognition/video recognition_train'
+video_test_address ='C:/Users/lyyc/Desktop/BirdRecognition/video recognition_test'
+base_net_address = 'D:/model/resnet101_0.9606666666666667.pkl'
+
+# img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/image_train',
+img_data = torchvision.datasets.ImageFolder(img_train_address,
                                                transform=transforms.Compose([
                                                 transforms.Resize(256),
                                                 transforms.RandomCrop(224),
@@ -32,8 +38,8 @@ print(len(img_data))
 data_loader = torch.utils.data.DataLoader(img_data, batch_size=16, shuffle=True)
 print(len(data_loader))
 
-# video_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/video recognition',
-video_data = torchvision.datasets.ImageFolder('D:/IMAGE2',
+video_data = torchvision.datasets.ImageFolder(video_train_address,
+# video_data = torchvision.datasets.ImageFolder('D:/IMAGE2',
                                             transform=transforms.Compose([
                                                 transforms.Resize(256),
                                                 transforms.RandomCrop(224),
@@ -49,7 +55,7 @@ print(len(video_data))
 # data_loader = torch.utils.data.DataLoader(img_data, batch_size=BATCH_SIZE*(1-batch_ratio), shuffle=True)
 print(len(data_loader2))
 
-test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/video recognition_test',
+test_data = torchvision.datasets.ImageFolder(video_test_address,
                                             transform=transforms.Compose([
                                                 transforms.Resize(224),
                                                 # transforms.RandomCrop(224),
@@ -65,7 +71,7 @@ print(len(test_data))
 # data_loader = torch.utils.data.DataLoader(img_data, batch_size=BATCH_SIZE*(1-batch_ratio), shuffle=True)
 print(len(test_loader))
 
-image_test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/test',
+image_test_data = torchvision.datasets.ImageFolder(image_test_address,
                                             transform=transforms.Compose([
                                                 transforms.Resize(224),
                                                 # transforms.RandomCrop(224),
@@ -112,6 +118,28 @@ valid_accuracy_list = []
 plt.ion()   # 画图
 plt.show()
 # training and testing
+
+class Net(nn.Module):
+    def __init__(self, model):
+        super(Net, self).__init__()
+        self.resnet_layer = nn.Sequential(*list(model.children())[:-2])
+
+        self.transion_layer = nn.ConvTranspose2d(2048, 2048, kernel_size=14, stride=3)
+        self.pool_layer = nn.MaxPool2d(32)
+        self.Linear_layer = nn.Linear(2048, 8)
+
+    def forward(self, x):
+        x = self.resnet_layer(x)
+
+        x = self.transion_layer(x)
+
+        x = self.pool_layer(x)
+
+        x = x.view(x.size(0), -1)
+
+        x = self.Linear_layer(x)
+
+
 
 # for epoch in range(EPOCH):
 #     correct = 0
@@ -238,16 +266,15 @@ def train(model_instance, train_source_loader, train_target_loader, test_target_
             plt.plot(x1, y1, 'o-')
             plt.xlabel('')
             plt.ylabel('loss')
-            plt.pause(0.1)
 
-        if iter_num % 500 == 0:
-            # eval_result = evaluate(model_instance, test_target_loader)
+        if iter_num % 500 == 0 and iter_num is not 0:
+            eval_result = evaluate(model_instance, test_target_loader)
             eval_result2 = evaluate(model_instance,test_source_loader)
             print('iteration number %s' % iter_num)
-            # print(eval_result)
+            print(eval_result)
             print(eval_result2)
             image_accuracy_list.append(eval_result2['accuracy'])
-            # valid_accuracy_list.append(eval_result['accuracy'])
+            valid_accuracy_list.append(eval_result['accuracy'])
             plt.subplot(2, 1, 2)
             x1 = range(0, len(image_accuracy_list))
             y1 = image_accuracy_list
@@ -260,9 +287,12 @@ def train(model_instance, train_source_loader, train_target_loader, test_target_
             # writer.add_scalars('data/accu', {
             #     'tgt accu': eval_result['accuracy'],
             # }, iter_num)
-            if eval_result2['accuracy'] > standard:
+            if len(valid_accuracy_list)%100 is 0 and len(valid_accuracy_list) is not 0:
+                plt.savefig('DANN_{0}.png'.format(len(valid_accuracy_list)))
+
+        if eval_result2['accuracy'] > standard:
                 standard = eval_result2['accuracy']
-                model_instance.save_model(c_net_path='D://model//DANN_IMAGE_accuracy{0}_c_net'.format(standard),d_net_path='D://model//DANN_IMAGE_accuracy{0}_d_net'.format(standard))
+                model_instance.save_model(c_net_path='DANN_IMAGE_accuracy{0}_c_net'.format(standard),d_net_path='DANN_IMAGE_accuracy{0}_d_net'.format(standard))
     print("finish train.")
 
 
@@ -291,7 +321,8 @@ class Identity(nn.Module):
 
 
 if __name__ == '__main__':
-    base_net = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
+
+    base_net = torch.load(base_net_address)
     base_net.fc = Identity()
     # model = transfor_net.DANN(base_net=base_net,use_bottleneck=False,trade_off=1)
     model = transfor_net.DANN(base_net='ResNet101', use_bottleneck=True, bottleneck_dim=256, class_num=15, hidden_dim=1024,
@@ -299,7 +330,7 @@ if __name__ == '__main__':
     # Set optimizer
     parameter_list = model.get_parameter_list()
     optimizer = optim.SGD(parameter_list, lr=1.0, momentum=0.9, weight_decay=0.0005, nesterov=True)
-    scheduler = INVScheduler(gamma=0.0003, decay_rate=0.75, init_lr=0.0003)
+    scheduler = INVScheduler(gamma=0.0002, decay_rate=0.75, init_lr=0.0003)
     group_ratios = [param_group["lr"] for param_group in optimizer.param_groups]
     # Train model
     train(model,data_loader,data_loader2,test_loader,image_test_loader,1000000, batch_size=32, optimizer=optimizer, lr_scheduler=scheduler, group_ratios=group_ratios)

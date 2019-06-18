@@ -22,12 +22,13 @@ def test(net,file,show,shuffle):
     # net.eval()
     test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/{0}'.format(file),
                                                  transform=transforms.Compose([
+                                                     utils.Padding(),
                                                      transforms.Resize(300),
                                                      # transforms.RandomCrop(224),
                                                      # transforms.RandomHorizontalFlip(),
-                                                     transforms.CenterCrop(300),
+                                                     # transforms.CenterCrop(300),
                                                      transforms.ToTensor(),
-                                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                                                     transforms.Normalize((127, 127, 127), (128, 128, 128)),
                                                  ])
                                                 )
     data_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=shuffle)
@@ -48,13 +49,14 @@ def test(net,file,show,shuffle):
         box = output[0].shape[1]
         standard = 0.2
         for i in range(batch):
-            print(i)
+            all+=1
             for j in range(box):
                 p = con[i][j]
                 bird = p[3].float()
                 if bird > standard:
                     standard = bird
                     print(bird)
+                    correct+=1
 
 
     #     pred_y = torch.max(output, 1)[1].data.squeeze()
@@ -70,11 +72,12 @@ def test(net,file,show,shuffle):
     #                 utils.show_from_tensor(b_x[i])
     #     print('{0}/{1}'.format(correct, all))
     # print(correct/len(test_data))
-    return correct/len(test_data)
+    return correct/all
 
 if __name__ == '__main__':
     # BATCH_SIZE = 1
-    net = create_mobilenetv2_ssd_lite(21, is_test=True)
+    net = create_mobilenetv2_ssd_lite(21, is_test=True,onnx_compatible=True)
     net.load('D:/model/mb2-ssd-lite-mp-0_686.pth')
     net.cuda()
-    test(net,'test',False,False)
+    accuracy=test(net,'video recognition_test',False,False)
+    print(accuracy)

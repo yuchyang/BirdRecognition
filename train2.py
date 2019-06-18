@@ -202,6 +202,7 @@ def train(model_instance, train_source_loader,test_source_loader ,num_iterations
         inputs_source, labels_source = inputs_source.cuda(), labels_source.cuda()
 
         output = model_instance(inputs_source)
+        print(output)
         pred_y = torch.max(output, 1)[1].data.squeeze()
         # print(output)
         # print(labels_source)
@@ -246,7 +247,7 @@ def train(model_instance, train_source_loader,test_source_loader ,num_iterations
 
 group_ratios = [param_group["lr"] for param_group in optimizer.param_groups]
 
-train(net, data_loader, image_test_loader, 1000000, batch_size=32, optimizer=optimizer,
+train(net, data_loader, image_test_loader, 10000, batch_size=32, optimizer=optimizer,
       lr_scheduler=scheduler, group_ratios=group_ratios)
 
 # training and testing
