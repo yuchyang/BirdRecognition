@@ -18,7 +18,7 @@ To handle this problem, in our implementation, a detection model is only used to
 * Detection dataset: This task relies on VOC2012 which is a public datase to to recognize objects from a number of visual object classes in realistic scenes. The bird is one of the object that required to detect in this dataset.
     * See http://host.robots.ox.ac.uk/pascal/VOC/voc2012/
     
-##What functions this repo provides？
+## What functions this repo provides？
 
 * A Resnet and Densenet on image source recognition task
 
@@ -33,7 +33,7 @@ To handle this problem, in our implementation, a detection model is only used to
 * Confusion matrix and classification_report is provide on evaluation
 
 
-##How to use?
+## How to use?
 * You neet to install the Dependencies on requirements.txt using 'pip install requirements.txt'
 
 * If you don't have CUDA environment, you need to delete .cuda() in the code to run on CPU
@@ -73,6 +73,6 @@ in train() method
 
 
 
-##Thanks to:
+## Thanks to:
 * [OswinGuai](https://github.com/OswinGuai)
 * [Hao qfgaohao](https://github.com/qfgaohao/)
