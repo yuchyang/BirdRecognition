@@ -5,21 +5,7 @@
     <bookmark url="file://$PROJECT_DIR$/TEST.py" line="77" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c636d95f-9080-49f3-a9f7-af3808d954ea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/coreML/DANN.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/coreML/DANN_convert.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vision/train_ssd.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SSD/SSDTEST.py" beforeDir="false" afterPath="$PROJECT_DIR$/SSD/SSDTEST.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coreML/convert2.py" beforeDir="false" afterPath="$PROJECT_DIR$/coreML/convert2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain_adaptation/train_two_datsets.py" beforeDir="false" afterPath="$PROJECT_DIR$/domain_adaptation/train_two_datsets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain_adaptation/transfor_net.py" beforeDir="false" afterPath="$PROJECT_DIR$/domain_adaptation/transfor_net.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train2.py" beforeDir="false" afterPath="$PROJECT_DIR$/train2.py" afterDir="false" />
-    </list>
+    <list default="true" id="c636d95f-9080-49f3-a9f7-af3808d954ea" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,25 +26,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/domain_adaptation/train_two_datsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-422">
-              <caret line="292" lean-forward="true" selection-start-line="292" selection-end-line="294" selection-end-column="160" />
+            <state relative-caret-position="158">
+              <caret line="324" column="30" selection-start-line="292" selection-end-line="294" selection-end-column="160" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/coreML/convert2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="32" column="45" selection-start-line="32" selection-start-column="45" selection-end-line="32" selection-end-column="45" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -100,11 +74,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+            <state relative-caret-position="380">
+              <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="20">
+                <caret line="1" column="10" lean-forward="true" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -209,6 +195,7 @@
         <option value="$PROJECT_DIR$/train.py" />
         <option value="$PROJECT_DIR$/domain_adaptation/train_two_datsets.py" />
         <option value="$PROJECT_DIR$/evaluation.py" />
+        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
@@ -273,7 +260,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.train">
+  <component name="RunManager" selected="Python.train_two_datsets">
     <configuration name="DANN" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="BirdRecognition" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -381,10 +368,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.train_two_datsets" />
         <item itemvalue="Python.train" />
         <item itemvalue="Python.SSDTEST" />
         <item itemvalue="Python.convert2" />
-        <item itemvalue="Python.train_two_datsets" />
         <item itemvalue="Python.DANN" />
       </list>
     </recent_temporary>
@@ -415,12 +402,12 @@
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.20116156" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.20116156" />
       <window_info id="Structure" order="1" sideWeight="0.516129" side_tool="true" weight="0.35986915" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49947202" weight="0.3295583" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.71537" visible="true" weight="0.3510759" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.71537" visible="true" weight="0.3510759" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.84400654" weight="0.72997713" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -457,7 +444,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ImageCrawl/spiders/Instagram_spider.py" />
     <entry file="file://$PROJECT_DIR$/ImageCrawl/spiders/Flickr_spider.py" />
     <entry file="file://$PROJECT_DIR$/ImageCrawl/items.py" />
     <entry file="file://$PROJECT_DIR$/ImageCrawl/middlewares.py" />
@@ -769,16 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/domain_adaptation/train_two_datsets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-422">
-          <caret line="292" lean-forward="true" selection-start-line="292" selection-end-line="294" selection-end-column="160" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TEST.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
@@ -809,10 +785,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="20">
+            <caret line="1" column="10" lean-forward="true" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+        <state relative-caret-position="380">
+          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain_adaptation/train_two_datsets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="324" column="30" selection-start-line="292" selection-end-line="294" selection-end-column="160" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

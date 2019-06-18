@@ -290,7 +290,7 @@ def train(model_instance, train_source_loader, train_target_loader, test_target_
             if len(valid_accuracy_list)%100 is 0 and len(valid_accuracy_list) is not 0:
                 plt.savefig('DANN_{0}.png'.format(len(valid_accuracy_list)))
 
-        if eval_result2['accuracy'] > standard:
+            if eval_result2['accuracy'] > standard:
                 standard = eval_result2['accuracy']
                 model_instance.save_model(c_net_path='DANN_IMAGE_accuracy{0}_c_net'.format(standard),d_net_path='DANN_IMAGE_accuracy{0}_d_net'.format(standard))
     print("finish train.")
