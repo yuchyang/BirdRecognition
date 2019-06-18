@@ -1,5 +1,5 @@
 ![mahua](https://ichef.bbci.co.uk/news/660/cpsprodpb/146E7/production/_105178638_gettyimages-898368424.jpg)
-##What's propose of this project?
+## What's propose of this project?
 This is a transfer learning implementation of classification and dectetion model for 15 Austrilia Birds on video source image.
 
 Different from image detection task, to track the target object, a video detection task relies on a faster processing speed to handle more frames in each second.  For a mobile device, the computation speed is limited. Therefore, some lightweight detection models are proposed to increase the FPS on a mobile device. However, most of those models sacrifice the accuracy on classification.
