@@ -23,8 +23,8 @@ model_onnx_path = "mobile_ssd.onnx"
 # model = torch.load('/Users/yangyucheng/Desktop/BirdRecognition/restnet101_0.96.pth',map_location=lambda storage, location: storage)
 # model = torch.load('/Users/yangyucheng/Desktop/BirdRecognition/restnet101_0.96.pth',map_location='cpu')
 # net = torch.load('../restnet101_0.96.pth')
-net = create_mobilenetv2_ssd_lite(21, is_test=True, onnx_compatible=True)
-net.load('D:/model/mb2-ssd-lite-mp-0_686.pth')
+net = create_mobilenetv2_ssd_lite(200, is_test=True, onnx_compatible=True)
+net.load('D://BirdRecognition//mobilenetv2-Epoch-106-Loss-6.8959480877761.pth')
 net.cuda()
 
 # Export the model to an ONNX file

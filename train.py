@@ -15,7 +15,7 @@ torch.manual_seed(1)    # reproducible
 
 # Hyper Parameters
 EPOCH = 200           #
-BATCH_SIZE = 42
+BATCH_SIZE = 22
 LR = 0.001        # Learning rate
 
 class INVScheduler(object):
@@ -36,7 +36,7 @@ img_address = 'C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition'
 model_saving_adress = 'D://model//resnet101_PADDING_{0}_{1}.pkl'
 test_address = 'video recognition_test'
 
-img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
+img_data = torchvision.datasets.ImageFolder('D://BirdRecognition//video recognition_train',
 # img_data = torchvision.datasets.ImageFolder('D:/IMAGE_TEST',
                                             transform=transforms.Compose([
                                                 utils.Padding(),
@@ -140,6 +140,8 @@ for epoch in range(EPOCH):
         y = b_y.cuda()
         output = net(x)# cnn output
         pred_y = torch.max(output, 1)[1].data.squeeze()
+        print(output)
+        print(pred_y)
         loss = loss_func(output, y)     # cross entropy loss
         # print(loss.data)
         # optimizer.zero_grad()           # clear gradients for this training step

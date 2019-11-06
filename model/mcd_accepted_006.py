@@ -1,0 +1,230 @@
+import torch
+import torch.nn as nn
+import loss
+from model import backbone
+from torchvision import models
+from layer.grl import GradientReverseLayer, AdaptorLayer
+from layer.silence import SilenceLayer
+from layer.rmm import RMMLayer
+from layer import grl
+from loss import loss
+from easy import BCELossForMultiClassification
+from torch.autograd import Variable
+from torch.nn.utils import spectral_norm
+import torch.nn.functional as F
+import numpy as np
+
+
+class FeatureExtractor(nn.Module):
+
+    def __init__(self):
+        super(FeatureExtractor, self).__init__()
+        ## set base network
+        model_resnet50 = models.resnet50(pretrained=True)
+        self.conv1 = model_resnet50.conv1
+        self.bn1 = model_resnet50.bn1
+        self.relu = model_resnet50.relu
+        self.maxpool = model_resnet50.maxpool
+        self.layer1 = model_resnet50.layer1
+        self.layer2 = model_resnet50.layer2
+        self.layer3 = model_resnet50.layer3
+        self.layer4 = model_resnet50.layer4
+        self.avgpool = model_resnet50.avgpool
+        self.high_dim = model_resnet50.fc.in_features
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = self.avgpool(x)
+        high_features = x.view(x.size(0), -1)
+        return high_features
+
+    def output_dim(self):
+        return self.high_dim
+
+
+class DomainAdaptor(nn.Module):
+    def __init__(self, feature_dim=2048, adaptor_dim=256):
+        super(DomainAdaptor, self).__init__()
+        ## initialization
+        self.bottleneck_layer = spectral_norm(nn.Linear(feature_dim, adaptor_dim))
+        self.bottleneck_layer.weight.data.normal_(0, 0.005)
+        self.bottleneck_layer.bias.data.fill_(0.1)
+
+    def forward(self, inputs):
+        adapted_features = self.bottleneck_layer(inputs)
+        return adapted_features
+
+
+class Adjustor(nn.Module):
+    def __init__(self, forward_rate=1.0, backward_rate=1.0):
+        super(Adjustor, self).__init__()
+        ## initialization
+        self.forward_rate = forward_rate
+        self.backward_rate = backward_rate
+
+    def forward(self, inputs):
+        adaptor = AdaptorLayer(forward_rate=self.forward_rate, backward_rate=self.backward_rate)
+        outputs = adaptor(inputs)
+        return outputs
+
+
+class FeatureClassifier(nn.Module):
+    def __init__(self, feature_dim=256, class_num=31):
+        super(FeatureClassifier, self).__init__()
+        self.classifier_layer = nn.Linear(feature_dim, class_num)
+        self.softmax = nn.Softmax()
+
+        ## initialization
+        self.classifier_layer.weight.data.normal_(0, 0.01)
+        self.classifier_layer.bias.data.fill_(0.0)
+
+    def forward(self, inputs):
+        outputs = self.classifier_layer(inputs)
+        softmax_outputs = self.softmax(outputs)
+        return outputs, softmax_outputs
+
+
+class MCD(object):
+    def __init__(self, base_net='ResNet50', class_num=31, trade_off=1.0, use_gpu=False, writer=None):
+        self.use_gpu = use_gpu
+        self.trade_off = trade_off
+        self.writer = writer
+
+        self.f_net = FeatureExtractor()
+        high_feature_dim = self.f_net.output_dim()
+        self.c_net_a = FeatureClassifier(feature_dim=high_feature_dim, class_num=class_num)
+        self.c_net_b = FeatureClassifier(feature_dim=high_feature_dim, class_num=class_num)
+
+        if self.use_gpu:
+            self.f_net = self.f_net.cuda()
+            self.c_net_a = self.c_net_a.cuda()
+            self.c_net_b = self.c_net_b.cuda()
+    def get_step_A_loss(self, inputs_source, labels_source,  iteration):
+        batch_size = inputs_source.size(0)
+        class_criterion = nn.CrossEntropyLoss()
+
+        feat_s = self.f_net(inputs_source)
+        outputs_s1, probabilities_s1 = self.c_net_a(feat_s)
+        outputs_s2, probabilities_s2 = self.c_net_b(feat_s)
+        classifier_loss_a = class_criterion(outputs_s1, labels_source)
+        classifier_loss_b = class_criterion(outputs_s2, labels_source)
+        classifier_loss = classifier_loss_a + classifier_loss_b
+        self.writer.add_scalars('data/loss', {
+            'classifier_loss_a': classifier_loss_a,
+            'classifier_loss_b': classifier_loss_b,
+            }, iteration)
+        return classifier_loss
+
+    def get_step_B_loss(self, inputs_source, labels_source, inputs_target, iteration):
+        batch_size = inputs_source.size(0)
+        class_criterion = nn.CrossEntropyLoss()
+        distance_criterion = nn.L1Loss()
+
+        feat_s = self.f_net(inputs_source)
+        outputs_s1, probabilities_s1 = self.c_net_a(feat_s)
+        outputs_s2, probabilities_s2 = self.c_net_b(feat_s)
+        feat_t = self.f_net(inputs_target)
+        outputs_t1, probabilities_t1 = self.c_net_a(feat_t)
+        outputs_t2, probabilities_t2 = self.c_net_b(feat_t)
+        loss_s1 = class_criterion(outputs_s1, labels_source)
+        loss_s2 = class_criterion(outputs_s2, labels_source)
+        loss_s = loss_s1+loss_s2
+        loss_dis = self.trade_off*distance_criterion(probabilities_t1, probabilities_t2)
+        loss = loss_s - loss_dis
+        self.writer.add_scalars('data/dis_loss', {
+            'dis_loss': loss_dis
+            }, iteration)
+        return loss
+
+
+    def get_step_C_loss(self, target_inputs, iteration, i):
+        batch_size = target_inputs.size(0)
+        distance_criterion = nn.L1Loss()
+
+        feat_t = self.f_net(target_inputs)
+        outputs_t1, probabilities_t1 = self.c_net_a(feat_t)
+        outputs_t2, probabilities_t2 = self.c_net_b(feat_t)
+
+        loss = self.trade_off * distance_criterion(probabilities_t1, probabilities_t2)
+        self.writer.add_scalars('probabilities', {
+            'tgt-a-max-' + str(i): torch.max(probabilities_t1, 1)[0].mean(),
+            'tgt-b-max-' + str(i): torch.max(probabilities_t2, 1)[0].mean(),
+            }, iteration)
+        self.writer.add_scalars('data/loss', {
+            'dis_loss-'+str(i): loss,
+            }, iteration)
+        return loss
+
+    def get_loss(self, inputs, labels_source, iteration):
+        batch_size = inputs.size(0) // 2
+        class_criterion = nn.CrossEntropyLoss()
+        distance_criterion = nn.L1Loss()
+
+        high_features  = self.f_net(inputs)
+        src_high_features = high_features.narrow(0, 0, batch_size)
+        tgt_high_features = high_features.narrow(0, batch_size, batch_size)
+
+        outputs_a, probabilities_a = self.c_net_a(high_features)
+        outputs_b, probabilities_b = self.c_net_b(high_features)
+        src_outputs_a, src_probabilities_a = self.c_net_a(src_high_features)
+        src_outputs_b, src_probabilities_b = self.c_net_b(src_high_features)
+        tgt_outputs_a, tgt_probabilities_a = self.c_net_a(tgt_high_features)
+        tgt_outputs_b, tgt_probabilities_b = self.c_net_b(tgt_high_features)
+        classifier_loss_a = class_criterion(src_outputs_a, labels_source)
+        classifier_loss_b = class_criterion(src_outputs_b, labels_source)
+        classifier_loss = classifier_loss_a + classifier_loss_b
+        self.writer.add_scalars('data/loss', {
+            'classifier_loss_a': classifier_loss_a,
+            'classifier_loss_b': classifier_loss_b,
+            }, iteration)
+        self.writer.add_scalars('probabilities', {
+            'src-a-max': torch.max(src_probabilities_a, 1)[0].mean(),
+            'src-b-max': torch.max(src_probabilities_b, 1)[0].mean(),
+            'tgt-a-max': torch.max(tgt_probabilities_a, 1)[0].mean(),
+            'tgt-b-max': torch.max(tgt_probabilities_b, 1)[0].mean(),
+            }, iteration)
+        tgt_distance_loss = 1 * self.trade_off * distance_criterion(tgt_probabilities_a, tgt_probabilities_b)
+        self.writer.add_scalars('data/loss', {
+            'tgt_distance_loss': tgt_distance_loss,
+            }, iteration)
+        return classifier_loss, tgt_distance_loss, -1 * tgt_distance_loss
+
+    def predict(self, inputs):
+        tgt_high_features = self.f_net(inputs)
+        _, softmax_outputs_a = self.c_net_a(tgt_high_features)
+        _, softmax_outputs_b = self.c_net_b(tgt_high_features)
+        softmax_outputs = (softmax_outputs_a + softmax_outputs_b) / 2
+        return softmax_outputs
+
+    def get_parameter_list(self):
+        FC_parameter_list = [
+                {'params': self.f_net.parameters(), 'lr': 1},
+                {'params': self.c_net_a.parameters(), 'lr': 10},
+                {'params': self.c_net_b.parameters(), 'lr': 10},
+                ]
+        F_parameter_list = [
+                {'params': self.f_net.parameters(), 'lr': 1},
+                #{'params': self.c_net_a.parameters(), 'lr': 10},
+                #{'params': self.c_net_b.parameters(), 'lr': 10},
+                ]
+        C_parameter_list = [
+                #{'params': self.f_net.parameters(), 'lr': 1},
+                {'params': self.c_net_a.parameters(), 'lr': 10},
+                {'params': self.c_net_b.parameters(), 'lr': 10},
+                ]
+
+        return FC_parameter_list, F_parameter_list, C_parameter_list
+
+    def set_train(self, mode):
+        self.f_net.train(mode)
+        self.c_net_a.train(mode)
+        self.c_net_b.train(mode)
+        self.is_train = mode
+ 

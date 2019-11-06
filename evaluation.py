@@ -10,14 +10,15 @@ from domain_adaptation import transfor_net
 from sklearn import metrics as metrics
 import numpy as np
 import matplotlib.pyplot as plt
-
+from coreML.DANN import DANN
 from sklearn import svm, datasets
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.utils.multiclass import unique_labels
 from sklearn.metrics import classification_report
+from SSD.cub import CUB_200
 
-validation = 'C:/Users/lyyc/Desktop/BirdRecognition/video recognition_validation'
+validation = 'D:\BirdRecognition\image_test2'
 
 BATCH_SIZE = 10
 
@@ -82,23 +83,37 @@ def plot_confusion_matrix(y_true, y_pred, classes,
     fig.tight_layout()
 
 
+
 def test(net,file,show,shuffle):
     print(net)
     # net.eval()
 
-    test_data = torchvision.datasets.ImageFolder(validation,
-    # test_data = torchvision.datasets.ImageFolder('D:/VALIDATION',
-                                                 transform=transforms.Compose([
-                                                     # utils.Padding(),
-                                                     transforms.Resize(224),
-                                                     # transforms.RandomCrop(224),
-                                                     # transforms.RandomHorizontalFlip(),
-                                                     transforms.CenterCrop(224),
-                                                     transforms.ToTensor(),
-                                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                                                 ])
-                                                )
-    data_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=shuffle)
+    # test_data = torchvision.datasets.ImageFolder(validation,
+    # # test_data = torchvision.datasets.ImageFolder('D:/VALIDATION',
+    #                                              transform=transforms.Compose([
+    #                                                  # utils.Padding(),
+    #                                                  transforms.Resize(224),
+    #                                                  # transforms.RandomCrop(224),
+    #                                                  # transforms.RandomHorizontalFlip(),
+    #                                                  transforms.CenterCrop(224),
+    #                                                  transforms.ToTensor(),
+    #                                                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    #                                              ])
+    #                                             )
+    # data_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=shuffle)
+    cub200_root = "D:\BirdRecognition\CUB_200_2011"
+
+    transform = transforms.Compose([
+        transforms.Resize(256),
+        transforms.RandomCrop(224),
+        transforms.RandomHorizontalFlip(),
+        # transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+    cub = CUB_200(cub200_root, train=True, transform=transform, target_transform=None)
+    test_data = CUB_200(cub200_root, train=False, transform=transform, target_transform=None)
+    data_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=True)
 
     a = []
     print(test_data)
@@ -107,13 +122,13 @@ def test(net,file,show,shuffle):
 
     correct = 0
     all = 0
-    for step, (b_x, b_y) in enumerate(data_loader):  # 分配 batch data, normalize x when iterate train_loader
+    for step, (b_x, b_y,z) in enumerate(data_loader):  # 分配 batch data, normalize x when iterate train_loader
         x = b_x.cuda()
         y = b_y.cuda()
         # print(x.shape)
         # print(x.data.shape)
-        # output = net(x)  # cnn output
-        output = net.predict(x)
+        output = net(x)  # cnn output
+        # output = net.predict(x)
         # print(output.data)
         # print(output)
         pred_y = torch.max(output, 1)[1].data.squeeze()
@@ -139,11 +154,12 @@ if __name__ == '__main__':
     # BATCH_SIZE = 1
     # net = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
     # print(net.bottleneck_layer())
-    c_net = torch.load('D:/model/DANN_accuracy0.8743386243386243_c_net_0.9853333333333333.pkl')
-    model = transfor_net.DANN(base_net='ResNet101', use_bottleneck=True, bottleneck_dim=256, class_num=15,
-                              hidden_dim=1024,
-                              trade_off=1.0, use_gpu=True)
-    model.load_model('D:/model/DANN_accuracy0.8703703703703703_c_net', 'D:/model/DANN_accuracy0.8743386243386243_d_net')
+    # c_net = torch.load('D:\BirdRecognition\domain_adaptation\DANN_30spc_accuracy0.9564250778123611_c_net')
+    model = DANN(base_net='ResNet101', use_bottleneck=True, bottleneck_dim=256, class_num=200, hidden_dim=1024,
+                 trade_off=1.0, use_gpu=False)
+    # model.load_model('D:\BirdRecognition\domain_adaptation\DANN_30spc_accuracy0.9564250778123611_c_net', 'D:\BirdRecognition\domain_adaptation\DANN_30s[cE_accuracy0.9564250778123611_d_net')
+    model.load_model('D:\BirdRecognition\domain_adaptation\DANN_IMAGE200_accuracy0.7355885398688298_c_net',
+                     'D:\BirdRecognition\domain_adaptation\DANN_IMAGE200_accuracy0.7355885398688298_d_net')
     model.set_train(False)
     # print(net)
     # test(net,'TEST0',True,False)
@@ -152,15 +168,29 @@ if __name__ == '__main__':
     # model.load_state_dict(torch.load('densnet_0.94_dict.pth'))
     # model = torch.load('D:/model/resnet101_0.9606666666666667.pkl')
     # model.eval()
-    # model.cuda()
+    model.cuda()
     np.set_printoptions(precision=2)
     true, pred = test(model, 'video recognition_test', False, False)
     true.extend(true)
     pred.extend(pred)
-    classname = ['Grey Butcherbird','Grey Fantail','House Sparrow ','Laughing Kookaburra','Little Wattlebird '
-        ,'New Holland Honeyeater ','Noisy Miner','Pied Currawong','Rainbow Lorikeet','Red Wattlebire','Red-browed Finch'
-        ,'Red-whiskered Bulbul','Silvereye','Spotted Pardalote','Spotted Turtle Dove']
-    plot_confusion_matrix(true, pred, classes=classname,
-                          title='Confusion matrix, without normalization')
-    print(classification_report(true, pred, target_names=classname))
+    labels = []
+    # with open('coreML/label30.txt','r') as f:
+    #     keyword = f.readline()
+    #     while keyword:  # 直到读取完文件
+    #         keyword = keyword[:-1]
+    #         print(keyword)
+    #         labels.append(keyword)  # 去掉换行符，也可以不去
+    #         keyword = f.readline()  # 读取一行文件，包括换行符
+    #     f.close()  # 关闭文件
+    for line in open('coreML/label200.txt'):
+        image_id, image_name = line.strip('\n').split()
+        image_name = image_name[4:]
+        image_name = image_name.replace('_', ' ')
+        labels.append(image_name)
+    print(len(labels))
+
+
+    plot_confusion_matrix(true, pred, classes=labels,
+                          title='Confusion matrix')
+    print(classification_report(true, pred, target_names=labels))
     plt.show()

@@ -5,32 +5,55 @@
     <bookmark url="file://$PROJECT_DIR$/TEST.py" line="77" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c636d95f-9080-49f3-a9f7-af3808d954ea" name="Default Changelist" comment="" />
+    <list default="true" id="c636d95f-9080-49f3-a9f7-af3808d954ea" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/SSD/cub.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SSD/train.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/coreML/convert3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain_adaptation/transfer_two_dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/BirdRecognition.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BirdRecognition.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiduImageSpider/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/BaiduImageSpider/index.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SSD/SSDTEST.py" beforeDir="false" afterPath="$PROJECT_DIR$/SSD/SSDTEST.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TEST.py" beforeDir="false" afterPath="$PROJECT_DIR$/TEST.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coreML/DANN_convert.py" beforeDir="false" afterPath="$PROJECT_DIR$/coreML/DANN_convert.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coreML/convert2.py" beforeDir="false" afterPath="$PROJECT_DIR$/coreML/convert2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain_adaptation/train_two_datsets.py" beforeDir="false" afterPath="$PROJECT_DIR$/domain_adaptation/train_two_datsets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train2.py" beforeDir="false" afterPath="$PROJECT_DIR$/train2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision/ssd/ssd.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision/ssd/ssd.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision/utils/box_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision/utils/box_utils.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="BirdRecognition" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SSD/mobilenet_v2_ssd_lite.py">
+        <entry file="file://$PROJECT_DIR$/coreML/convert.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-364">
-              <caret line="23" column="97" selection-start-line="23" selection-start-column="82" selection-end-line="23" selection-end-column="97" />
+            <state relative-caret-position="340">
+              <caret line="19" column="34" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
               <folding>
-                <element signature="e#0#12#0" expanded="true" />
+                <element signature="e#0#35#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/domain_adaptation/train_two_datsets.py">
+        <entry file="file://$PROJECT_DIR$/evaluation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="324" column="30" selection-start-line="292" selection-end-line="294" selection-end-column="160" />
+            <state relative-caret-position="28">
+              <caret line="179" column="23" lean-forward="true" selection-start-line="179" selection-start-column="23" selection-end-line="179" selection-end-column="23" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -39,10 +62,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/train.py">
+        <entry file="file://$PROJECT_DIR$/domain_adaptation/transfer_two_dataset.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="178" column="43" selection-start-line="178" selection-start-column="24" selection-end-line="178" selection-end-column="43" />
+            <state relative-caret-position="4700">
+              <caret line="245" column="16" selection-start-line="245" selection-start-column="8" selection-end-line="245" selection-end-column="16" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -53,8 +76,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TEST.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="22" column="26" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="26" />
+            <state relative-caret-position="300">
+              <caret line="23" column="66" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -63,10 +86,29 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evaluation.py">
+        <entry file="file://$PROJECT_DIR$/domain_adaptation/DANN_100.png">
+          <provider selected="true" editor-type-id="images" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/msilib/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="146" column="4" lean-forward="true" selection-start-line="146" selection-start-column="4" selection-end-line="146" selection-end-column="26" />
+            <state relative-caret-position="9100">
+              <caret line="460" column="8" selection-start-line="460" selection-start-column="8" selection-end-line="460" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/coreML/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/domain_adaptation/train_two_datsets.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6340">
+              <caret line="326" column="54" selection-start-line="326" selection-start-column="54" selection-end-line="326" selection-end-column="54" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -75,58 +117,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+        <entry file="file://$PROJECT_DIR$/coreML/convert3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="20">
-                <caret line="1" column="10" lean-forward="true" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/domain_adaptation/transfor_net.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="53" column="45" selection-start-line="53" selection-start-column="35" selection-end-line="53" selection-end-column="45" />
+            <state relative-caret-position="740">
+              <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
               <folding>
-                <element signature="e#0#12#0" expanded="true" />
+                <element signature="e#0#45#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SSD/SSDTEST.py">
+        <entry file="file://$PROJECT_DIR$/coreML/DANN_convert.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="79" column="50" selection-start-line="79" selection-start-column="50" selection-end-line="79" selection-end-column="50" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vision/train_ssd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4064">
-              <caret line="104" selection-start-line="104" selection-end-line="104" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="140">
+              <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -142,21 +148,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>print</find>
-      <find>F</find>
-      <find>test</find>
-      <find>util</find>
-      <find>BATCH_SIZE</find>
-      <find>2208</find>
-      <find>save_image</find>
-      <find>word</find>
+      <find>BAT</find>
+      <find>ACCu</find>
+      <find>_train_path_label</find>
+      <find>video_train_address</find>
+      <find>data_loader2</find>
+      <find>batch_size</find>
+      <find>16</find>
+      <find>20</find>
+      <find>train_batch</find>
+      <find>.BACKWAR</find>
+      <find>LOS</find>
+      <find>ACC</find>
+      <find>save</find>
+      <find>PLT</find>
+      <find>SAVE</find>
+      <find>ACCU</find>
       <find>PRINT</find>
-      <find>state_dict</find>
       <find>acc</find>
-      <find>plt</find>
-      <find>OPTIMI</find>
-      <find>loss</find>
-      <find>train</find>
+      <find>accu</find>
+      <find>accUR</find>
+      <find>accU</find>
+      <find>standard</find>
+      <find>base_net</find>
+      <find>dann</find>
+      <find>_get_path_label</find>
+      <find>plot_confusion_matrix</find>
+      <find>CUB_200</find>
+      <find>baird</find>
+      <find>throated</find>
+      <find>vire</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -178,31 +199,43 @@
         <option value="$PROJECT_DIR$/utils/utils.py" />
         <option value="$PROJECT_DIR$/convert_coreML.py" />
         <option value="$PROJECT_DIR$/coreML/tcl/convert2.py" />
-        <option value="$PROJECT_DIR$/BaiduImageSpider/index.py" />
         <option value="$PROJECT_DIR$/ImageCrawl/spiders/Instagram_spider.py" />
         <option value="$PROJECT_DIR$/ImageCrawl/settings.py" />
         <option value="$PROJECT_DIR$/vision/1.py" />
-        <option value="$PROJECT_DIR$/TEST.py" />
-        <option value="$PROJECT_DIR$/train2.py" />
         <option value="$PROJECT_DIR$/2.py" />
         <option value="$PROJECT_DIR$/coreML/convert.py" />
-        <option value="$PROJECT_DIR$/coreML/DANN_convert.py" />
-        <option value="$PROJECT_DIR$/domain_adaptation/transfor_net.py" />
         <option value="$PROJECT_DIR$/coreML/DANN.py" />
         <option value="$PROJECT_DIR$/vision/train_ssd.py" />
-        <option value="$PROJECT_DIR$/SSD/SSDTEST.py" />
-        <option value="$PROJECT_DIR$/coreML/convert2.py" />
-        <option value="$PROJECT_DIR$/train.py" />
-        <option value="$PROJECT_DIR$/domain_adaptation/train_two_datsets.py" />
-        <option value="$PROJECT_DIR$/evaluation.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/SSD/mate.py" />
+        <option value="$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torch/optim/lr_scheduler.py" />
+        <option value="$PROJECT_DIR$/vision/utils/box_utils.py" />
+        <option value="$PROJECT_DIR$/SSD/SSDTEST.py" />
+        <option value="$PROJECT_DIR$/vision/ssd/data_preprocessing.py" />
+        <option value="$PROJECT_DIR$/vision/transforms/transforms.py" />
+        <option value="$PROJECT_DIR$/domain_adaptation/transfor_net.py" />
+        <option value="$PROJECT_DIR$/coreML/convert2.py" />
+        <option value="$PROJECT_DIR$/coreML/convert3.py" />
+        <option value="$PROJECT_DIR$/vision/ssd/ssd.py" />
+        <option value="$PROJECT_DIR$/SSD/train.py" />
+        <option value="$PROJECT_DIR$/train2.py" />
+        <option value="$PROJECT_DIR$/SSD/cub.py" />
+        <option value="$PROJECT_DIR$/train.py" />
+        <option value="$PROJECT_DIR$/TEST.py" />
+        <option value="$PROJECT_DIR$/train3.py" />
+        <option value="$PROJECT_DIR$/domain_adaptation/transfer_two_dataset.py" />
+        <option value="$PROJECT_DIR$/BaiduImageSpider/index.py" />
+        <option value="$PROJECT_DIR$/domain_adaptation/train_two_datsets.py" />
+        <option value="$PROJECT_DIR$/coreML/DANN_convert.py" />
+        <option value="$PROJECT_DIR$/evaluation.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="width" value="1094" />
+    <option name="x" value="395" />
+    <option name="y" value="12" />
+    <option name="width" value="1374" />
     <option name="height" value="1057" />
   </component>
   <component name="ProjectView">
@@ -210,6 +243,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -220,32 +254,36 @@
             <path>
               <item name="BirdRecognition" type="b2602c69:ProjectViewProjectNode" />
               <item name="BirdRecognition" type="462c0819:PsiDirectoryNode" />
-              <item name="network" type="462c0819:PsiDirectoryNode" />
+              <item name="BaiduImageSpider" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="BirdRecognition" type="b2602c69:ProjectViewProjectNode" />
               <item name="BirdRecognition" type="462c0819:PsiDirectoryNode" />
-              <item name="SSD" type="462c0819:PsiDirectoryNode" />
+              <item name="coreML" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BirdRecognition" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BirdRecognition" type="462c0819:PsiDirectoryNode" />
+              <item name="domain_adaptation" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/crawlForImages-master" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\lyyc\Desktop\BirdRecognition\SSD" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\lyyc\Desktop\BirdRecognition\coreML" />
       <recent name="C:\Users\lyyc\Desktop\BirdRecognition" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\lyyc\Desktop\BirdRecognition\SSD" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -260,8 +298,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.train_two_datsets">
-    <configuration name="DANN" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.evaluation">
+    <configuration name="DANN_convert" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="BirdRecognition" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -273,7 +311,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coreML/DANN.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coreML/DANN_convert.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -282,49 +320,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="SSDTEST" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="BirdRecognition" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/SSD" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SSD/SSDTEST.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="convert2" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="BirdRecognition" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/coreML" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coreML/convert2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="train" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="evaluation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="BirdRecognition" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -336,7 +332,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="index" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="BirdRecognition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/BaiduImageSpider" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BaiduImageSpider/index.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -366,13 +383,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="transfer_two_dataset" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="BirdRecognition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/domain_adaptation" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/domain_adaptation/transfer_two_dataset.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.evaluation" />
+        <item itemvalue="Python.DANN_convert" />
         <item itemvalue="Python.train_two_datsets" />
-        <item itemvalue="Python.train" />
-        <item itemvalue="Python.SSDTEST" />
-        <item itemvalue="Python.convert2" />
-        <item itemvalue="Python.DANN" />
+        <item itemvalue="Python.index" />
+        <item itemvalue="Python.transfer_two_dataset" />
       </list>
     </recent_temporary>
   </component>
@@ -402,25 +440,45 @@
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.20116156" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48961425" visible="true" weight="0.16631468" />
       <window_info id="Structure" order="1" sideWeight="0.516129" side_tool="true" weight="0.35986915" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info id="Favorites" order="2" sideWeight="0.51038575" side_tool="true" weight="0.20116156" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49947202" weight="0.3295583" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.71537" visible="true" weight="0.3510759" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7127772" visible="true" weight="0.8369196" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.84400654" weight="0.72997713" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49894404" weight="0.32907718" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3295583" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.28462997" side_tool="true" weight="0.4254208" />
-      <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49947202" weight="0.32907718" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.2872228" side_tool="true" weight="0.26840317" />
+      <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49947202" weight="0.32842582" />
       <window_info active="true" anchor="bottom" id="Inspection Results" order="10" visible="true" weight="0.32911393" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4936642" weight="0.33182332" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49260825" weight="0.16874292" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48961425" visible="true" weight="0.20116156" />
+      <window_info id="Structure" order="1" sideWeight="0.516129" side_tool="true" weight="0.35986915" />
+      <window_info id="Favorites" order="2" sideWeight="0.51038575" side_tool="true" weight="0.20116156" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49947202" weight="0.3295583" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7127772" visible="true" weight="0.26840317" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.84400654" weight="0.72997713" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49894404" weight="0.32907718" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3295583" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.2872228" side_tool="true" visible="true" weight="0.26840317" />
+      <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.49947202" weight="0.32842582" />
+      <window_info active="true" anchor="bottom" id="Inspection Results" order="10" visible="true" weight="0.32911393" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49260825" weight="0.17893545" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -432,7 +490,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/SSD/SSDTEST.py</url>
-          <line>53</line>
+          <line>54</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -440,183 +498,89 @@
           <line>3</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/SSD/train.py</url>
+          <line>22</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/vision/utils/box_utils.py</url>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ImageCrawl/spiders/Flickr_spider.py" />
-    <entry file="file://$PROJECT_DIR$/ImageCrawl/items.py" />
-    <entry file="file://$PROJECT_DIR$/ImageCrawl/middlewares.py" />
-    <entry file="file://$PROJECT_DIR$/ImageCrawl/pipelines.py" />
-    <entry file="file://$PROJECT_DIR$/ImageCrawl/settings.py" />
-    <entry file="file://$PROJECT_DIR$/ImageCrawl/spiders/BingSearch_spider.py" />
-    <entry file="file://$PROJECT_DIR$/preproccess.py">
+    <entry file="file://$PROJECT_DIR$/utils/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+        <state relative-caret-position="147">
+          <caret line="22" column="6" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torch/nn/modules/conv.py" />
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torch/utils/data/dataloader.py" />
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torchvision/transforms/transforms.py" />
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torch/nn/modules/container.py" />
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torch/nn/modules/module.py" />
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/random.py" />
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torch/optim/lr_scheduler.py" />
+    <entry file="file://$PROJECT_DIR$/vision/transforms/transforms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1840">
+          <caret line="97" column="45" selection-start-line="97" selection-start-column="45" selection-end-line="97" selection-end-column="45" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#50#62#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Miniconda3/envs/cnn/Lib/site-packages/sklearn/utils/multiclass.py">
+    <entry file="file://$USER_HOME$/Miniconda3/envs/BirdRecognition/Lib/site-packages/torch/nn/_reduction.py" />
+    <entry file="file://$PROJECT_DIR$/vision/utils/box_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../domain adaptation/model/backbone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="2980">
+          <caret line="203" selection-start-line="203" selection-end-line="203" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Miniconda3/envs/cnn/Lib/site-packages/sklearn/metrics/classification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2636">
-          <caret line="1447" column="4" selection-start-line="1447" selection-start-column="4" selection-end-line="1447" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Miniconda3/envs/cnn/Lib/site-packages/torch/nn/modules/loss.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17780">
-          <caret line="897" selection-start-line="897" selection-end-line="897" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/2.py" />
-    <entry file="file://$PROJECT_DIR$/convert_coreML.py">
+    <entry file="file://$PROJECT_DIR$/vision/ssd/predictor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
-          <caret line="4" selection-start-line="3" selection-end-line="4" />
+          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/network/resnet.py">
+    <entry file="file://$PROJECT_DIR$/vision/ssd/mobilenet_v2_ssd_lite.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2680">
-          <caret line="6" column="14" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1020">
+          <caret line="58" column="74" selection-start-line="58" selection-start-column="67" selection-end-line="58" selection-end-column="74" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vision/ssd/config/mobilenetv1_ssd_config.py">
+    <entry file="file://$PROJECT_DIR$/vision/nn/multibox_loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="80">
+          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vision/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BaiduImageSpider/index.py">
+    <entry file="file://$PROJECT_DIR$/SSD/mobilenet_v2_ssd_lite.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="130" column="78" lean-forward="true" selection-start-line="130" selection-start-column="2" selection-end-line="130" selection-end-column="78" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/ssd/mobilenetv1_ssd_lite.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="320">
+          <caret line="23" column="105" selection-start-line="23" selection-start-column="105" selection-end-line="23" selection-end-column="105" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Miniconda3/envs/cnn/Lib/site-packages/torch/jit/__init__.py">
+    <entry file="file://$PROJECT_DIR$/SSD/SSDTEST.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="199" selection-start-line="199" selection-end-line="199" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Miniconda3/envs/cnn/Lib/site-packages/torch/nn/modules/module.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14520">
-          <caret line="733" column="72" selection-start-line="733" selection-start-column="72" selection-end-line="733" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Miniconda3/envs/cnn/Lib/site-packages/torchvision/models/resnet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3940">
-          <caret line="199" column="20" selection-start-line="199" selection-start-column="14" selection-end-line="199" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/coreML/convert.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="20" selection-start-line="20" selection-end-line="22" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Miniconda3/envs/cnn/Lib/site-packages/torchvision/datasets/folder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="164" column="85" lean-forward="true" selection-start-line="164" selection-start-column="85" selection-end-line="164" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/ssd/mobilenetv1_ssd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-884">
-          <caret line="10" column="26" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/datasets/voc_dataset.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1800">
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/datasets/generate_vocdata.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/datasets/open_images.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/prunning/prunner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4264">
+        <state relative-caret-position="186">
+          <caret line="42" column="22" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -625,140 +589,69 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vision/ssd/ssd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2662">
-          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/ssd/squeezenet_ssd_lite.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1284">
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/93149002/torch/_C/_TensorBase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39700">
-          <caret line="1993" column="8" selection-start-line="1993" selection-start-column="8" selection-end-line="1993" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/train2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3220">
-          <caret line="172" column="17" selection-start-line="172" selection-start-column="17" selection-end-line="172" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/coreML/DANN.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-862">
-          <caret line="74" column="5" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
+        <state relative-caret-position="172">
+          <caret line="100" column="8" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/domain_adaptation/DANN_100.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/resnet101_MIX_DATSET_LR = 0.0001.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/resnet101_IMAGE_LR = 0.001.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/densnet161_IMAGE_VIDEO_LR = 0.001.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/utils.py">
+    <entry file="file://$PROJECT_DIR$/SSD/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="22" column="6" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/coreML/DANN_convert.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+        <state relative-caret-position="217">
+          <caret line="99" column="2" selection-start-line="99" selection-start-column="2" selection-end-line="100" selection-end-column="60" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vision/1.py">
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torch/nn/modules/loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="77" column="57" selection-start-line="77" selection-start-column="57" selection-end-line="77" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/coreML/convert2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="32" column="45" selection-start-line="32" selection-start-column="45" selection-end-line="32" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SSD/SSDTEST.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="79" column="50" selection-start-line="79" selection-start-column="50" selection-end-line="79" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SSD/mobilenet_v2_ssd_lite.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-364">
-          <caret line="23" column="97" selection-start-line="23" selection-start-column="82" selection-end-line="23" selection-end-column="97" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vision/train_ssd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4064">
-          <caret line="104" selection-start-line="104" selection-end-line="104" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="306">
+          <caret line="908" column="8" selection-start-line="908" selection-start-column="8" selection-end-line="908" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/domain_adaptation/transfor_net.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="53" column="45" selection-start-line="53" selection-start-column="35" selection-end-line="53" selection-end-column="45" />
+        <state relative-caret-position="360">
+          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TEST.py">
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torchvision/models/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="22" column="26" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="26" />
+        <state relative-caret-position="222">
+          <caret line="257" column="4" selection-start-line="257" selection-start-column="4" selection-end-line="257" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torch/optim/adam.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torchvision/transforms/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torchvision/transforms/transforms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="184" column="8" selection-start-line="184" selection-start-column="8" selection-end-line="184" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-720">
+          <caret line="69" column="71" lean-forward="true" selection-start-line="69" selection-end-line="70" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -767,45 +660,200 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="178" column="43" selection-start-line="178" selection-start-column="24" selection-end-line="178" selection-end-column="43" />
+        <state relative-caret-position="3400">
+          <caret line="180" column="7" selection-start-line="180" selection-start-column="7" selection-end-line="180" selection-end-column="82" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vision/ssd/config/mobilenetv1_ssd_config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="22" column="46" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vision/ssd/data_preprocessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/instagram-crawler-master/crawler.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/InstagramCrawler-master/instagramcrawler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torch/serialization.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8760">
+          <caret line="452" selection-start-line="452" selection-end-line="452" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torchvision/datasets/folder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3980">
+          <caret line="205" column="11" selection-start-line="205" selection-start-column="8" selection-end-line="205" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-1248675567/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105920">
+          <caret line="5296" column="33" selection-start-line="5296" selection-start-column="33" selection-end-line="5296" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaiduImageSpider/index.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2220">
+          <caret line="120" column="16" selection-start-line="120" selection-start-column="16" selection-end-line="120" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/crawlForImages-master/crawlForImages.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TEST0/0/5c1aad112720d9dfb509a775a2ba922.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SSD/cub.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="66" column="28" selection-start-line="66" selection-start-column="28" selection-end-line="66" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1040">
+          <caret line="67" column="10" selection-start-line="67" selection-start-column="6" selection-end-line="67" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coreML/DANN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/site-packages/torch/nn/modules/module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11660">
+          <caret line="590" selection-start-line="590" selection-end-line="590" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coreML/convert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="19" column="34" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain_adaptation/transfer_two_dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4700">
+          <caret line="245" column="16" selection-start-line="245" selection-start-column="8" selection-end-line="245" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TEST.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="23" column="66" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain_adaptation/DANN_100.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../CONDA/envs/bird7/Lib/msilib/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9100">
+          <caret line="460" column="8" selection-start-line="460" selection-start-column="8" selection-end-line="460" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coreML/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain_adaptation/train_two_datsets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6340">
+          <caret line="326" column="54" selection-start-line="326" selection-start-column="54" selection-end-line="326" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coreML/convert3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="740">
+          <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coreML/DANN_convert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coreML/convert2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="146" column="4" lean-forward="true" selection-start-line="146" selection-start-column="4" selection-end-line="146" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="20">
-            <caret line="1" column="10" lean-forward="true" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/domain_adaptation/train_two_datsets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="324" column="30" selection-start-line="292" selection-end-line="294" selection-end-column="160" />
+        <state relative-caret-position="28">
+          <caret line="179" column="23" lean-forward="true" selection-start-line="179" selection-start-column="23" selection-end-line="179" selection-end-column="23" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>

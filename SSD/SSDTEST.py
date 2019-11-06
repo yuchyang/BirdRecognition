@@ -20,7 +20,7 @@ def Get_Average(list):
 
 def test(net,file,show,shuffle):
     # net.eval()
-    test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/{0}'.format(file),
+    test_data = torchvision.datasets.ImageFolder('D:/BirdRecognition/{0}'.format(file),
                                                  transform=transforms.Compose([
                                                      utils.Padding(),
                                                      transforms.Resize(300),
@@ -41,10 +41,11 @@ def test(net,file,show,shuffle):
     for step, (b_x, b_y) in enumerate(data_loader):  # 分配 batch data, normalize x when iterate train_loader
         x = b_x.cuda()
         y = b_y.cuda()
-
+        print(x.shape)
         output = net(x)  # cnn output
         con = output[0]
         loc = output[1]
+
         batch = output[0].shape[0]
         box = output[0].shape[1]
         standard = 0.2

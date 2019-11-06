@@ -1,0 +1,339 @@
+from evaluator.evaluator import evaluate
+from trainer.lr_scheduler import INVScheduler
+import torch
+import torch.optim as optim
+import torch.nn as nn
+from torch.autograd import Variable
+from torch.nn.utils import spectral_norm
+from torch.nn.modules.batchnorm import BatchNorm1d
+import torchvision.datasets as datasets
+import torchvision.transforms as transforms
+from torchvision import models
+from preprocess.data_provider import load_images, load_images_10crops, load_images_folder
+from tensorboardX import SummaryWriter
+from preprocess.data_list import ImageList
+import os
+import math
+import loss
+from opts import read_config
+
+
+class FeatureExtractor(nn.Module):
+
+    def __init__(self):
+        super(FeatureExtractor, self).__init__()
+        ## set base network
+        model_resnet50 = models.resnet50(pretrained=True)
+        self.conv1 = model_resnet50.conv1
+        self.bn1 = model_resnet50.bn1
+        self.relu = model_resnet50.relu
+        self.maxpool = model_resnet50.maxpool
+        self.layer1 = model_resnet50.layer1
+        self.layer2 = model_resnet50.layer2
+        self.layer3 = model_resnet50.layer3
+        self.layer4 = model_resnet50.layer4
+        self.avgpool = model_resnet50.avgpool
+        self.high_dim = model_resnet50.fc.in_features
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = self.avgpool(x)
+        high_features = x.view(x.size(0), -1)
+        return high_features
+
+    def output_dim(self):
+        return self.high_dim
+
+
+
+
+class FeatureClassifier(nn.Module):
+    def __init__(self, feature_dim=512, class_num=10):
+        super(FeatureClassifier, self).__init__()
+        self.classifier_layer_1 = nn.Linear(feature_dim, feature_dim // 2)
+        self.classifier_layer_2 = nn.Linear(feature_dim // 2, class_num)
+        # self.classifier_layer_1 = nn.Linear(feature_dim, class_num)
+        self.softmax = nn.Softmax()
+
+        ## initialization
+        self.classifier_layer_1.weight.data.normal_(0, 0.01)
+        self.classifier_layer_1.bias.data.fill_(0.0)
+        self.classifier_layer_2.weight.data.normal_(0, 0.01)
+        self.classifier_layer_2.bias.data.fill_(0.0)
+
+    def forward(self, inputs):
+        outputs = self.classifier_layer_1(inputs)
+        outputs = self.classifier_layer_2(outputs)
+        softmax_outputs = self.softmax(outputs)
+        return outputs, softmax_outputs
+
+def twoway_cross_entropy_loss(target_a, target_b):
+    clamp_a = torch.clamp(target_a, 0.000001)
+    clamp_b = torch.clamp(target_b, 0.000001)
+    e_1 = target_a * torch.log(clamp_b)
+    e_2 = target_b * torch.log(clamp_a)
+    b = -0.5 * (e_1 + e_2).sum()
+    return b
+
+def entropy_loss(inputs):
+    clamp_inputs = torch.clamp(inputs, 0.000001)
+    b = inputs * torch.log(clamp_inputs)
+    b = -1.0 * b.sum()
+    return b
+
+class ResClassifier_office(nn.Module):
+    def __init__(self, class_num=65,num_layer = 2,num_unit=2048,prob=0.5,middle=256):
+        super(ResClassifier_office, self).__init__()
+        layers = []
+        # currently 10000 units
+        layers.append(nn.Dropout(p=prob))
+        layers.append(nn.Linear(num_unit,middle))
+        layers.append(nn.BatchNorm1d(middle,affine=True))
+        layers.append(nn.ReLU(inplace=True))
+        layers.append(nn.Dropout(p=prob))
+        layers.append(nn.Linear(middle,class_num))
+        self.classifier = nn.Sequential(*layers)
+        self.softmax=nn.Softmax()
+
+    def forward(self, x):
+        x = self.classifier(x)
+        y = self.softmax(x)
+        return x, y
+
+class Enwrap(object):
+    def __init__(self, class_num=10, trade_off=1.0, use_gpu=False, writer=None):
+        self.use_gpu = use_gpu
+        self.trade_off = trade_off
+        self.writer = writer
+
+        self.f_net = FeatureExtractor()
+        high_feature_dim = self.f_net.output_dim()
+        self.bn = BatchNorm1d(high_feature_dim, affine=False).cuda()
+        #feature_dim = adaptor_dim
+        self.c_net_a = ResClassifier_office(num_unit=high_feature_dim, middle=high_feature_dim//2, class_num=class_num)
+        self.c_net_b = ResClassifier_office(num_unit=high_feature_dim, middle=high_feature_dim//2, class_num=class_num)
+
+        if self.use_gpu:
+            self.f_net = self.f_net.cuda()
+            self.c_net_a = self.c_net_a.cuda()
+            self.c_net_b = self.c_net_b.cuda()
+
+    def get_loss(self, inputs, labels_source, epoch):
+        batch_size = inputs.size(0) // 2
+        class_criterion = nn.CrossEntropyLoss()
+        distance_criterion = nn.L1Loss()
+        # distance_criterion = twoway_cross_entropy_loss
+
+        high_features = self.f_net(inputs)
+        src_high_features = high_features.narrow(0, 0, batch_size)
+        tgt_high_features = high_features.narrow(0, batch_size, batch_size)
+        src_high_features = self.bn(src_high_features)
+        tgt_high_features = self.bn(tgt_high_features)
+
+        outputs_a, probabilities_a = self.c_net_a(high_features)
+        outputs_b, probabilities_b = self.c_net_b(high_features)
+        src_outputs_a, src_probabilities_a = self.c_net_a(src_high_features)
+        src_outputs_b, src_probabilities_b = self.c_net_b(src_high_features)
+        tgt_outputs_a, tgt_probabilities_a = self.c_net_a(tgt_high_features)
+        tgt_outputs_b, tgt_probabilities_b = self.c_net_b(tgt_high_features)
+        classifier_loss_a = class_criterion(src_outputs_a, labels_source)
+        classifier_loss_b = class_criterion(src_outputs_b, labels_source)
+        classifier_loss = classifier_loss_a + classifier_loss_b
+        self.writer.add_scalars('data/loss', {
+            'classifier_loss_a': classifier_loss_a,
+            'classifier_loss_b': classifier_loss_b,
+            }, epoch)
+        self.writer.add_scalars('probabilities', {
+            'src-a-max': torch.max(src_probabilities_a, 1)[0].mean(),
+            'src-b-max': torch.max(src_probabilities_b, 1)[0].mean(),
+            'tgt-a-max': torch.max(tgt_probabilities_a, 1)[0].mean(),
+            'tgt-b-max': torch.max(tgt_probabilities_b, 1)[0].mean(),
+            }, epoch)
+        src_scale_loss = 1 * self.trade_off * distance_criterion(src_probabilities_a, src_probabilities_b)
+        tgt_scale_loss = 1 * self.trade_off * distance_criterion(tgt_probabilities_a, tgt_probabilities_b)
+        tgt_entropy_loss = 1 * self.trade_off * entropy_loss((tgt_probabilities_a + tgt_probabilities_b)/2)
+        self.writer.add_scalars('data/loss', {
+            'src_scale_loss': src_scale_loss,
+            'tgt_scale_loss': tgt_scale_loss,
+            'tgt_entropy_loss': tgt_entropy_loss,
+            }, epoch)
+        entropy_rate = 1/(1 + math.exp(-epoch/5000))
+        return classifier_loss, classifier_loss - src_scale_loss + tgt_scale_loss, entropy_rate * tgt_entropy_loss
+        #return classifier_loss, classifier_loss + src_scale_loss, entropy_rate * tgt_entropy_loss
+        # return classifier_loss, min_scale_loss, max_scale_loss
+
+    def predict(self, inputs):
+        tgt_high_features = self.f_net(inputs)
+        # features = self.bottleneck(high_features)
+        _, softmax_outputs_a = self.c_net_a(tgt_high_features)
+        _, softmax_outputs_b = self.c_net_b(tgt_high_features)
+        softmax_outputs = (softmax_outputs_a + softmax_outputs_b) / 2
+        return softmax_outputs
+
+    def get_parameter_list(self):
+        classifier_parameter_list = [
+                {'params': self.f_net.parameters(), 'lr': 1},
+                {'params': self.c_net_a.parameters(), 'lr': 20},
+                {'params': self.c_net_b.parameters(), 'lr': 20},
+                ]
+        src_scale_parameter_list = [
+                {'params': self.f_net.parameters(), 'lr': 1},
+                #{'params': self.c_net_a.parameters(), 'lr': 10},
+                #{'params': self.c_net_b.parameters(), 'lr': 10},
+                ]
+        tgt_scale_parameter_list = [
+                {'params': self.f_net.parameters(), 'lr': 1},
+                #{'params': self.c_net_a.parameters(), 'lr': 10},
+                #{'params': self.c_net_b.parameters(), 'lr': 10},
+                ]
+
+        return classifier_parameter_list, src_scale_parameter_list, tgt_scale_parameter_list
+
+    def set_train(self, mode):
+        self.f_net.train(mode)
+        self.c_net_a.train(mode)
+        self.c_net_b.train(mode)
+        self.is_train = mode
+
+def train_threesteps(model_instance, train_source_loader, train_target_loader, test_target_loader, num_iterations, batch_size, optimizer_a, optimizer_b, optimizer_c, lr_scheduler_a, lr_scheduler_b, lr_scheduler_c, group_ratios_a, group_ratios_b, group_ratios_c, writer):
+    num_batch_train_source = len(train_source_loader) - 1
+    num_batch_train_target = len(train_target_loader) - 1
+    model_instance.set_train(True)
+    ## train one iter
+    print("start train...")
+    for iter_num in range(num_iterations):
+        optimizer_a = lr_scheduler_a.next_optimizer(group_ratios_a, optimizer_a, iter_num)
+        optimizer_b = lr_scheduler_b.next_optimizer(group_ratios_b, optimizer_b, iter_num)
+        optimizer_c = lr_scheduler_c.next_optimizer(group_ratios_c, optimizer_c, iter_num)
+        if iter_num % num_batch_train_source == 0:
+            iter_source = iter(train_source_loader)
+        if iter_num % num_batch_train_target == 0:
+            iter_target = iter(train_target_loader)
+        inputs_source, labels_source = iter_source.next()
+        inputs_target, labels_target = iter_target.next()
+        if model_instance.use_gpu:
+            inputs_source, inputs_target, labels_source = Variable(inputs_source).cuda(), Variable(inputs_target).cuda(), Variable(labels_source).cuda()
+        else:
+            inputs_source, inputs_target, labels_source = Variable(inputs_source), Variable(inputs_target), Variable(labels_source)
+        train_batch_threesteps(model_instance, inputs_source, labels_source, inputs_target, optimizer_a, optimizer_b, optimizer_c, iter_num)
+        if iter_num % 500 == 0:
+            eval_result = evaluate(model_instance, test_target_loader)
+            print('iteration number %s' % iter_num)
+            print(eval_result)
+            writer.add_scalars('data/accu', {
+                'tgt accu': eval_result['accuracy'],
+                }, iter_num)
+    print("finish train.")
+
+
+def train_batch_threesteps(model_instance, inputs_source, labels_source, inputs_target, optimizer_a, optimizer_b, optimizer_c, epoch):
+    inputs = torch.cat((inputs_source, inputs_target), dim=0)
+    loss_a, loss_b, loss_c = model_instance.get_loss(inputs, labels_source, epoch)
+    optimizer_a.zero_grad()
+    loss_a.backward(retain_graph=True)
+    optimizer_a.step()
+    optimizer_b.zero_grad()
+    loss_b.backward(retain_graph=True)
+    optimizer_b.step()
+    optimizer_c.zero_grad()
+    loss_c.backward()
+    optimizer_c.step()
+
+
+def inv_lr_scheduler(param_lr, optimizer, iter_num, gamma, power, init_lr=0.001):
+    lr = init_lr * (1 + gamma * iter_num) ** (-power)
+    i = 0
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr * param_lr[i]
+        i += 1
+    return optimizer
+## 001 S to M
+def main():
+    args = read_config()
+    # prepare GPU setting
+    # os.environ['CUDA_VISIBLE_DEVICES'] = '6'
+    # Prepare data
+    batch_size = 32
+    class_num = 65
+    # source_list = '/data/digit/svhn_balanced_c.txt'
+    # target_list = '/data/digit/mnist_train_c.txt'
+    # test_list = '/data/digit/mnist_test_c.txt'
+
+    # kwargs = {'num_workers': 1}
+    # train_source_loader = torch.utils.data.DataLoader(
+    #     ImageList(open(source_list).readlines(), transform=transforms.Compose([
+    #         transforms.ToTensor(),
+    #         transforms.Normalize((0.5,), (0.5,))
+    #     ])),
+    #     batch_size=batch_size, shuffle=True, **kwargs)
+    # train_target_loader = torch.utils.data.DataLoader(
+    #     ImageList(open(target_list).readlines(), transform=transforms.Compose([
+    #         transforms.Resize((32, 32)),
+    #         transforms.ToTensor(),
+    #         transforms.Normalize((0.5,), (0.5,))
+    #     ])),
+    #     batch_size=batch_size, shuffle=True, **kwargs)
+    # test_target_loader = torch.utils.data.DataLoader(
+    #     ImageList(open(test_list).readlines(), transform=transforms.Compose([
+    #         transforms.Resize((32, 32)),
+    #         transforms.ToTensor(),
+    #         transforms.Normalize((0.5,), (0.5,))
+    #     ])),
+    #     batch_size=batch_size, shuffle=False, **kwargs)
+    #/data/office-home/images/Art  Clipart  Product  Real_World
+    train_source_file_path = '/data/office-home/images/Real_World'
+    train_target_file_path = '/data/office-home/images/Product'
+    test_file_path = '/data/office-home/images/Product'
+
+    model_path = 'model.pkl'
+    # n = 4
+    # transformer = transforms.Compose([
+    #         transforms.Resize((28, 28)),
+    #         transforms.ToTensor(),
+    #         transforms.Normalize((0.5,), (0.5,))])
+
+    # train_source_dataset = datasets.ImageFolder(train_source_file_path, transform = transformer)
+    # train_target_dataset = datasets.ImageFolder(train_target_file_path, transform = transformer)
+    # test_target_dataset = datasets.ImageFolder(test_file_path, transform = transformer)
+
+    # train_source_loader = torch.utils.data.DataLoader(train_source_dataset, batch_size=batch_size, shuffle=True)
+    # train_target_loader = torch.utils.data.DataLoader(train_target_dataset, batch_size=batch_size, shuffle=True)
+    # test_target_loader = torch.utils.data.DataLoader(test_target_dataset, batch_size=batch_size, shuffle=False)
+    
+    train_source_loader = load_images_folder(train_source_file_path, batch_size=batch_size, resize_size=256, is_train=True, crop_size=224)
+    train_target_loader = load_images_folder(train_target_file_path, batch_size=batch_size, resize_size=256, is_train=True, crop_size=224)
+    test_target_loader = load_images_folder(test_file_path, batch_size=batch_size, resize_size=256, is_train=False, crop_size=224)
+
+    writer = SummaryWriter(args.logdir)
+    # # Init model
+    model_instance = Enwrap(class_num=65, use_gpu=True, trade_off=0.05, writer=writer)
+    # # Set optimizer
+    FC_parameter_list, F_parameter_list, C_parameter_list = model_instance.get_parameter_list()
+    FC_optimizer = optim.SGD(FC_parameter_list, lr=1.0, momentum=0.9, weight_decay=0.0005, nesterov=True)
+    F_optimizer = optim.SGD(F_parameter_list, lr=1.0, momentum=0.9, weight_decay=0.0005, nesterov=True)
+    C_optimizer = optim.SGD(C_parameter_list, lr=1.0, momentum=0.9, weight_decay=0.0005, nesterov=True)
+    scheduler_a = INVScheduler(gamma=0.0001, decay_rate=0.75, init_lr=0.0002) # gama to 1e-3
+    scheduler_b = INVScheduler(gamma=0.0001, decay_rate=0.75, init_lr=0.0002)
+    scheduler_c = INVScheduler(gamma=0.0001, decay_rate=0.75, init_lr=0.0001)
+    group_ratios_a = [param_group["lr"] for param_group in FC_optimizer.param_groups]
+    group_ratios_b = [param_group["lr"] for param_group in F_optimizer.param_groups]
+    group_ratios_c = [param_group["lr"] for param_group in C_optimizer.param_groups]
+    
+    # # Train model
+    train_threesteps(model_instance, train_source_loader, train_target_loader, test_target_loader, num_iterations=50000, batch_size=batch_size, optimizer_a=FC_optimizer, optimizer_b=F_optimizer, optimizer_c=C_optimizer, lr_scheduler_a=scheduler_a, lr_scheduler_b=scheduler_b, lr_scheduler_c=scheduler_c, group_ratios_a=group_ratios_a, group_ratios_b=group_ratios_b, group_ratios_c=group_ratios_c, writer=writer)
+    # # Evaluate model
+    print("All training is finished.")
+    eval_result = evaluate(model_instance, test_target_loader)
+    print(eval_result)
+    # # Save model
+    torch.save(model_instance, model_path)
+
+if __name__ == '__main__':
+    main()

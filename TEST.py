@@ -21,7 +21,7 @@ def test(net,file,show,shuffle):
     print(net)
     net.eval()
     # net.set_train(False)
-    test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/{0}'.format(file),
+    test_data = torchvision.datasets.ImageFolder('D://IMAGE_TEST',
                                                  transform=transforms.Compose([
                                                      # utils.Padding(),
                                                      transforms.Resize(224),

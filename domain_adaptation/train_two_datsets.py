@@ -17,10 +17,10 @@ BATCH_SIZE = 36
 LR = 0.0001
 batch_ratio = 0.5   # video_image/all
 
-img_train_address = 'D:/IMAGE2'
-image_test_address = 'C:/Users/lyyc/Desktop/BirdRecognition/image_test'
-video_train_address = 'C:/Users/lyyc/Desktop/BirdRecognition/video recognition_train'
-video_test_address ='C:/Users/lyyc/Desktop/BirdRecognition/video recognition_test'
+img_train_address = 'D:/BirdRecognition/image_train'
+image_test_address = 'D:/BirdRecognition/image_test'
+video_train_address = 'D:/BirdRecognition/video recognition_train'
+video_test_address ='D:/BirdRecognition/video recognition_test'
 base_net_address = 'D:/model/resnet101_0.9606666666666667.pkl'
 
 # img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/image_train',
@@ -288,11 +288,11 @@ def train(model_instance, train_source_loader, train_target_loader, test_target_
             #     'tgt accu': eval_result['accuracy'],
             # }, iter_num)
             if len(valid_accuracy_list)%100 is 0 and len(valid_accuracy_list) is not 0:
-                plt.savefig('DANN_{0}.png'.format(len(valid_accuracy_list)))
+                plt.savefig('DANN30spec_{0}.png'.format(len(valid_accuracy_list)))
 
             if eval_result2['accuracy'] > standard:
                 standard = eval_result2['accuracy']
-                model_instance.save_model(c_net_path='DANN_IMAGE_accuracy{0}_c_net'.format(standard),d_net_path='DANN_IMAGE_accuracy{0}_d_net'.format(standard))
+                model_instance.save_model(c_net_path='DANN_30spc_accuracy{0}_c_net'.format(standard),d_net_path='DANN_30s[cE_accuracy{0}_d_net'.format(standard))
     print("finish train.")
 
 
@@ -322,10 +322,8 @@ class Identity(nn.Module):
 
 if __name__ == '__main__':
 
-    base_net = torch.load(base_net_address)
-    base_net.fc = Identity()
     # model = transfor_net.DANN(base_net=base_net,use_bottleneck=False,trade_off=1)
-    model = transfor_net.DANN(base_net='ResNet101', use_bottleneck=True, bottleneck_dim=256, class_num=15, hidden_dim=1024,
+    model = transfor_net.DANN(base_net='ResNet101', use_bottleneck=True, bottleneck_dim=256, class_num=30, hidden_dim=1024,
                           trade_off=1.0, use_gpu=True)
     # Set optimizer
     parameter_list = model.get_parameter_list()

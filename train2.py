@@ -64,7 +64,7 @@ EPOCH = 200           #
 BATCH_SIZE = 42
 LR = 0.001        # Learning rate
 
-img_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/ImageRecognition',
+img_data = torchvision.datasets.ImageFolder('D:/IMAGE2',
                                             transform=transforms.Compose([
                                                 utils.Padding(),
                                                 transforms.Resize(256),
@@ -85,7 +85,7 @@ from torch.nn import functional as F
 
 
 
-image_test_data = torchvision.datasets.ImageFolder('C:/Users/lyyc/Desktop/BirdRecognition/test',
+image_test_data = torchvision.datasets.ImageFolder('D:/IMAGE_TEST',
                                             transform=transforms.Compose([
                                                 transforms.Resize(224),
                                                 # transforms.RandomCrop(224),
@@ -202,7 +202,8 @@ def train(model_instance, train_source_loader,test_source_loader ,num_iterations
         inputs_source, labels_source = inputs_source.cuda(), labels_source.cuda()
 
         output = model_instance(inputs_source)
-        print(output)
+        print(output.shape)
+        print(labels_source.shape)
         pred_y = torch.max(output, 1)[1].data.squeeze()
         # print(output)
         # print(labels_source)

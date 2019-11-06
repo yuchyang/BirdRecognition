@@ -42,6 +42,7 @@ class SSD(nn.Module):
         locations = []
         start_layer_index = 0
         header_index = 0
+        i=0
         for end_layer_index in self.source_layer_indexes:
             if isinstance(end_layer_index, GraphPath):
                 path = end_layer_index
@@ -70,9 +71,11 @@ class SSD(nn.Module):
                 end_layer_index += 1
             start_layer_index = end_layer_index
             confidence, location = self.compute_header(header_index, y)
+            # print(confidence.shape)
             header_index += 1
             confidences.append(confidence)
             locations.append(location)
+
 
         for layer in self.base_net[end_layer_index:]:
             x = layer(x)
@@ -86,16 +89,16 @@ class SSD(nn.Module):
 
         confidences = torch.cat(confidences, 1)
         locations = torch.cat(locations, 1)
-        
-        if self.is_test:
-            confidences = F.softmax(confidences, dim=2)
-            boxes = box_utils.convert_locations_to_boxes(
-                locations, self.priors, self.config.center_variance, self.config.size_variance
-            )
-            boxes = box_utils.center_form_to_corner_form(boxes)
-            return confidences, boxes
-        else:
-            return confidences, locations
+        #
+        # if self.is_test:
+        #     confidences = F.softmax(confidences, dim=2)
+        #     boxes = box_utils.convert_locations_to_boxes(
+        #         locations, self.priors, self.config.center_variance, self.config.size_variance
+        #     )
+        #     boxes = box_utils.center_form_to_corner_form(boxes)
+        #     return confidences, boxes
+        # else:
+        return confidences, locations
 
     def compute_header(self, i, x):
         confidence = self.classification_headers[i](x)
@@ -151,10 +154,13 @@ class MatchPrior(object):
             gt_boxes = torch.from_numpy(gt_boxes)
         if type(gt_labels) is np.ndarray:
             gt_labels = torch.from_numpy(gt_labels)
+
         boxes, labels = box_utils.assign_priors(gt_boxes, gt_labels,
                                                 self.corner_form_priors, self.iou_threshold)
         boxes = box_utils.corner_form_to_center_form(boxes)
         locations = box_utils.convert_boxes_to_locations(boxes, self.center_form_priors, self.center_variance, self.size_variance)
+        # print(locations)
+
         return locations, labels
 
 

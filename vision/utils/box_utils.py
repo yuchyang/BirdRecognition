@@ -173,6 +173,10 @@ def assign_priors(gt_boxes, gt_labels, corner_form_priors,
     # 2.0 is used to make sure every target has a prior assigned
     best_target_per_prior.index_fill_(0, best_prior_per_target_index, 2)
     # size: num_priors
+    # print(gt_boxes.shape)
+    # print(gt_labels)
+    # print(corner_form_priors)
+
     labels = gt_labels[best_target_per_prior_index]
     labels[best_target_per_prior < iou_threshold] = 0  # the backgournd id
     boxes = gt_boxes[best_target_per_prior_index]
