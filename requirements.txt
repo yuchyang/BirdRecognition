@@ -10,7 +10,7 @@ decorator==4.3.2
 entrypoints==0.3
 gast==0.2.2
 grpcio==1.18.0
-html5lib==0.9999999
+html5lib==0.999999999
 ipykernel==5.1.0
 ipython==7.3.0
 ipython-genutils==0.2.0
@@ -80,7 +80,7 @@ decorator==4.3.2
 entrypoints==0.3
 gast==0.2.2
 grpcio==1.18.0
-html5lib==0.9999999
+html5lib==0.999999999
 ipykernel==5.1.0
 ipython==7.3.0
 ipython-genutils==0.2.0
